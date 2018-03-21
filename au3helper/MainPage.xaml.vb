@@ -46,7 +46,7 @@ Public NotInheritable Class MainPage
                     End If
                 Case 1
                     If Regex.Matches(src, "(winwaitactive|winwaitclose|winwaitnotactive|winwait)\(""(.+?)"",""(.+?)""\)", RegexOptions.IgnoreCase).Count > 0 Then
-                        result = Regex.Replace(src, "(winwaitactive|winwaitclose|winwaitnotactive|winwait)\(""(.+?)"",""(.+?)""\)", "等待带有 $2 字符串的 $1 窗口出现", RegexOptions.IgnoreCase)
+                        result = Regex.Replace(src, "(winwaitactive|winwaitclose|winwaitnotactive|winwait)\(""(.+?)"",""(.+?)""\)", "等待带有 $3 字符串的 $2 窗口 $1", RegexOptions.IgnoreCase)
                     Else
                         errorflag = True
                         result = "语法错误：" + src
@@ -441,8 +441,8 @@ Public NotInheritable Class MainPage
         Dim about_dlg As New ContentDialog With
         {
             .Title = "关于",
-            .Content = "还没写好" + vbCrLf + "设备：" + Windows.System.Profile.AnalyticsInfo.VersionInfo.DeviceFamily,
-            .PrimaryButtonText = "没写好",
+            .Content = "还没写好" + vbCrLf  + "设备：" + Windows.System.Profile.AnalyticsInfo.VersionInfo.DeviceFamily,
+            .PrimaryButtonText = "源代码",
             .SecondaryButtonText = "关闭"
         }
         AddHandler about_dlg.PrimaryButtonClick, AddressOf repo_clicked
@@ -450,7 +450,7 @@ Public NotInheritable Class MainPage
     End Sub
 
     Private Async Sub repo_clicked(sender As ContentDialog, args As ContentDialogButtonClickEventArgs)
-        Await Windows.System.Launcher.LaunchUriAsync(New Uri("https://www.baidu.com"))
+        Await Windows.System.Launcher.LaunchUriAsync(New Uri("https://github.com/suwakowww/au3helper"))
     End Sub
 
     Private Sub btn_run_exec_Click(sender As Object, e As RoutedEventArgs)
