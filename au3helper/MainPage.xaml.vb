@@ -438,10 +438,13 @@ Public NotInheritable Class MainPage
     End Sub
 
     Private Async Sub btn_about_Click(sender As Object, e As RoutedEventArgs)
+        Dim dlg_content As String
+        dlg_content = "一个写 Au3 脚本的工具。" + vbCrLf + "系统平台：" + Windows.System.Profile.AnalyticsInfo.VersionInfo.DeviceFamily + vbCrLf
+        dlg_content = dlg_content + "分辨率（虚拟）：" + Window.Current.Bounds.Width.ToString + " x " + Window.Current.Bounds.Height.ToString
         Dim about_dlg As New ContentDialog With
         {
             .Title = "关于",
-            .Content = "还没写好" + vbCrLf  + "设备：" + Windows.System.Profile.AnalyticsInfo.VersionInfo.DeviceFamily,
+            .Content = dlg_content,
             .PrimaryButtonText = "源代码",
             .SecondaryButtonText = "关闭"
         }
