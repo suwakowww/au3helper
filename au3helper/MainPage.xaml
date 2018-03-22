@@ -106,6 +106,8 @@
         </Flyout>
         <!--#endregion-->
 
+        <!--#region 暂停设置，已迁移至 sleep_cdlg-->
+        <!--
         <Flyout x:Name="sleep_fly">
             <Grid>
                 <StackPanel>
@@ -115,6 +117,8 @@
                 </StackPanel>
             </Grid>
         </Flyout>
+        -->
+        <!--#endregion-->
 
         <!--#region  窗口等待-->
         <Flyout x:Name="winwait_fly">

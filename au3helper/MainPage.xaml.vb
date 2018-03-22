@@ -334,8 +334,17 @@ Public NotInheritable Class MainPage
         controlclick_fly.ShowAt(c_click)
     End Sub
 
-    Private Sub sleep_Click(sender As Object, e As RoutedEventArgs)
-        sleep_fly.ShowAt(sleep)
+    Private Async Sub sleep_Click(sender As Object, e As RoutedEventArgs)
+        '原来使用 Flyout 的显现方法
+        'sleep_fly.ShowAt(sleep)
+
+        '更换为使用 ContentDialog 显现
+        Dim sleep_dlg_r As ContentDialogResult
+        Dim sleep_dlg As New sleep_cdlg
+        sleep_dlg_r = Await sleep_dlg.ShowAsync()
+        If sleep_dlg_r = ContentDialogResult.Primary Then
+            rawcode.Text = rawcode.Text + sleep_dlg.addcode.Trim() + vbCrLf
+        End If
     End Sub
 
 #Region "控件点击高级选项显示/隐藏"
@@ -394,12 +403,13 @@ Public NotInheritable Class MainPage
 #End Region
 
 #Region "生成 Sleep 代码"
-    Private Sub btn_sleep_Click(sender As Object, e As RoutedEventArgs)
-        Dim addcode As String = Nothing
-        addcode = "sleep(" + sleep_times.Text + ")"
-        rawcode.text = rawcode.text + addcode.Trim() + vbCrLf
-        sleep_times.Text = ""
-    End Sub
+    '由于转移到了 sleep_cdlg，所以这段位于 sleep_fly 的代码不再可以访问
+    'Private Sub btn_sleep_Click(sender As Object, e As RoutedEventArgs)
+    'Dim addcode As String = Nothing
+    'addcode = "sleep(" + sleep_times.Text + ")"
+    'rawcode.text = rawcode.text + addcode.Trim() + vbCrLf
+    'sleep_times.Text = ""
+    'End Sub
 #End Region
 
     Private Sub w_wait_Click(sender As Object, e As RoutedEventArgs)
@@ -469,7 +479,7 @@ Public NotInheritable Class MainPage
             mousekey.Visibility = Visibility.Collapsed
             clickbtn.Visibility = Visibility.Collapsed
             cclickbtn.Visibility = Visibility.Collapsed
-            timerbtn.Visibility = Visibility.Collapsed
+            'timerbtn.Visibility = Visibility.Collapsed
             runbtn.Visibility = Visibility.Collapsed
         End If
         If Window.Current.Bounds.Width < Window.Current.Bounds.Height Then
