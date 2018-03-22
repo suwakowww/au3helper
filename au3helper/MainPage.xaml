@@ -11,7 +11,8 @@
     >
     <Page.Resources>
         
-        <!--#region 移动鼠标设置-->
+        <!--#region 移动鼠标设置，已迁移至 mousemove_cdlg-->
+        <!--
         <Flyout x:Name="mousemove_fly">
             <Grid>
                 <StackPanel>
@@ -27,9 +28,11 @@
                 </StackPanel>
             </Grid>
         </Flyout>
+        -->
         <!--#endregion-->
         
-        <!--#region 点击鼠标设置-->
+        <!--#region 点击鼠标设置，已迁移至 moudeclick_dlg-->
+        <!--
         <Flyout x:Name="mouseclick_fly">
             <Grid>
                 <StackPanel>
@@ -56,6 +59,7 @@
                 </StackPanel>
             </Grid>
         </Flyout>
+        -->
         <!--#endregion-->
         
         <!--#region 发送按键设置-->

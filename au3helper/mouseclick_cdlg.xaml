@@ -1,0 +1,40 @@
+﻿<ContentDialog
+    x:Class="au3helper.mouseclick_cdlg"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:au3helper"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Title="鼠标点击"
+    PrimaryButtonText="插入"
+    SecondaryButtonText="关闭"
+    PrimaryButtonClick="ContentDialog_PrimaryButtonClick"
+    SecondaryButtonClick="ContentDialog_SecondaryButtonClick">
+
+    <Grid>
+        <ScrollViewer x:Name="scrollbar" VerticalScrollBarVisibility="Hidden">
+            <StackPanel Margin="0,0,12,0">
+                <TextBlock>点击按键</TextBlock>
+                <TextBlock Width="300" TextWrapping="Wrap" Foreground="{ThemeResource HyperlinkForegroundThemeBrush}">默认情况下，主要按键为鼠标左键，但如果在左手模式的情况下，主要按键为右键。</TextBlock>
+                <TextBlock Width="300" TextWrapping="Wrap" Foreground="{ThemeResource HyperlinkForegroundThemeBrush}">但是，如果设置了鼠标左键或者鼠标右键，则始终会按下鼠标左键或者鼠标右键。</TextBlock>
+                <ComboBox x:Name="click_key" SelectedIndex="3" Margin="0,4">
+                    <ComboBoxItem>左键</ComboBoxItem>
+                    <ComboBoxItem>中键</ComboBoxItem>
+                    <ComboBoxItem>右键</ComboBoxItem>
+                    <ComboBoxItem>主要按键</ComboBoxItem>
+                    <ComboBoxItem>次要按键</ComboBoxItem>
+                </ComboBox>
+                <CheckBox x:Name="click_adv" Content="显示高级选项" Click="click_adv_Click"/>
+                <TextBlock x:Name="click_x_text" Visibility="Collapsed">水平值（x）</TextBlock>
+                <TextBox x:Name="click_x" Margin="0,4" Visibility="Collapsed"></TextBox>
+                <TextBlock x:Name="click_y_text" Visibility="Collapsed">垂直值（y）</TextBlock>
+                <TextBox x:Name="click_y" Margin="0,4" Visibility="Collapsed"></TextBox>
+                <TextBlock x:Name="click_times_text" Visibility="Collapsed">点击次数</TextBlock>
+                <TextBox x:Name="click_times" Margin="0,4" Visibility="Collapsed"></TextBox>
+                <TextBlock x:Name="click_move_s_text" Visibility="Collapsed">鼠标移动速度</TextBlock>
+                <Slider x:Name="click_move_s" Minimum="-100" Maximum="0" Value="-10" Visibility="Collapsed"></Slider>
+            </StackPanel>
+        </ScrollViewer>
+    </Grid>
+</ContentDialog>

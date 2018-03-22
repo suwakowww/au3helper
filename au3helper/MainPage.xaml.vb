@@ -126,7 +126,7 @@ Public NotInheritable Class MainPage
             '检测 MouseMove 函数
             If Regex.Matches(src, ",").Count > 0 Then
                 If Regex.Matches(src, "mousemove\(([0-9]+),([0-9])+,([0-9]+)+\)", RegexOptions.IgnoreCase).Count > 0 Then
-                    result = Regex.Replace(src, "mousemove\(([0-9]+),([0-9])+,([0-9]+)+\)", "将鼠标以 $3 的速度移动到 ($1,$2) 的位置（速度值越大越慢）", RegexOptions.IgnoreCase)
+                    result = Regex.Replace(src, "mousemove\(([0-9]+),([0-9]+)+,([0-9]+)+\)", "将鼠标以 $3 的速度移动到 ($1,$2) 的位置（速度值越大越慢）", RegexOptions.IgnoreCase)
                 Else
                     result = "语法错误：" + src
                 End If
@@ -227,103 +227,115 @@ Public NotInheritable Class MainPage
     End Sub
 #End Region
 
-    Private Sub m_move_Click(sender As Object, e As RoutedEventArgs)
-        mousemove_fly.ShowAt(m_move)
+    Private Async Sub m_move_Click(sender As Object, e As RoutedEventArgs)
+        'mousemove_fly.ShowAt(m_move)
+        Dim mousefly_dlg As New mousemove_cdlg
+        Dim mousefly_dlg_r As ContentDialogResult
+        mousefly_dlg_r = Await mousefly_dlg.ShowAsync()
+        If mousefly_dlg_r = ContentDialogResult.Primary Then
+            rawcode.Text = rawcode.Text + mousefly_dlg.addcode + vbCrLf
+        End If
     End Sub
 
-#Region "生成 MouseMove 代码"
-    Private Sub btn_insertmmove_Click(sender As Object, e As RoutedEventArgs)
-        Dim addcode As String = Nothing
-        If move_adv.IsChecked = True Then
-            addcode = "mousemove(" + move_x.Text + "," + move_y.Text + "," + (Math.Abs(move_s.Value).ToString) + ")"
-        Else
-            addcode = "mousemove(" + move_x.Text + "," + move_y.Text + ")"
-        End If
-        rawcode.Text = rawcode.Text + addcode.Trim() + vbCrLf
-        '执行完成之后恢复初始设置
-        move_x.Text = ""
-        move_y.Text = ""
-        move_s.Value = -10
-    End Sub
+#Region "生成 MouseMove 代码，已迁移至 mousemove_cdlg"
+    'Private Sub btn_insertmmove_Click(sender As Object, e As RoutedEventArgs)
+    'Dim addcode As String = Nothing
+    'If move_adv.IsChecked = True Then
+    'addcode = "mousemove(" + move_x.Text + "," + move_y.Text + "," + (Math.Abs(move_s.Value).ToString) + ")"
+    'Else
+    'addcode = "mousemove(" + move_x.Text + "," + move_y.Text + ")"
+    'End If
+    'rawcode.Text = rawcode.Text + addcode.Trim() + vbCrLf
+    '执行完成之后恢复初始设置
+    'move_x.Text = ""
+    'move_y.Text = ""
+    'move_s.Value = -10
+    'End Sub
 #End Region
 
-    Private Sub m_click_Click(sender As Object, e As RoutedEventArgs)
-        mouseclick_fly.ShowAt(m_click)
-    End Sub
-
-#Region "鼠标移动高级选项显示/隐藏"
-    Private Sub move_adv_Click(sender As Object, e As RoutedEventArgs)
-        If move_adv.isChecked = True Then
-            move_s.Visibility = Visibility.Visible
-            move_text_s.Visibility = Visibility.Visible
-        Else
-            move_s.Visibility = Visibility.Collapsed
-            move_text_s.Visibility = Visibility.Collapsed
+    Private Async Sub m_click_Click(sender As Object, e As RoutedEventArgs)
+        'mouseclick_fly.ShowAt(m_click)
+        Dim mouseclick_dlg As New mouseclick_cdlg
+        Dim mouseclick_dlg_r As ContentDialogResult
+        mouseclick_dlg_r = Await mouseclick_dlg.ShowAsync()
+        If mouseclick_dlg_r = ContentDialogResult.Primary Then
+            rawcode.Text = rawcode.Text + mouseclick_dlg.addcode + vbCrLf
         End If
     End Sub
+
+#Region "鼠标移动高级选项显示/隐藏，已迁移至 mousemove_cdlg"
+    'Private Sub move_adv_Click(sender As Object, e As RoutedEventArgs)
+    'If move_adv.isChecked = True Then
+    'move_s.Visibility = Visibility.Visible
+    'move_text_s.Visibility = Visibility.Visible
+    'Else
+    'move_s.Visibility = Visibility.Collapsed
+    'move_text_s.Visibility = Visibility.Collapsed
+    'End If
+    'End Sub
 #End Region
 
-#Region "鼠标点击高级选项显示/隐藏"
-    Private Sub click_adv_Click(sender As Object, e As RoutedEventArgs)
-        If click_adv.IsChecked = True Then
-            click_x.Visibility = Visibility.Visible
-            click_x_text.Visibility = Visibility.Visible
-            click_y.Visibility = Visibility.Visible
-            click_y_text.Visibility = Visibility.Visible
-            click_times_text.Visibility = Visibility.Visible
-            click_times.Visibility = Visibility.Visible
-            click_move_s_text.Visibility = Visibility.Visible
-            click_move_s.Visibility = Visibility.Visible
-        Else
-            click_x.Visibility = Visibility.Collapsed
-            click_x_text.Visibility = Visibility.Collapsed
-            click_y.Visibility = Visibility.Collapsed
-            click_y_text.Visibility = Visibility.Collapsed
-            click_times_text.Visibility = Visibility.Collapsed
-            click_times.Visibility = Visibility.Collapsed
-            click_move_s_text.Visibility = Visibility.Collapsed
-            click_move_s.Visibility = Visibility.Collapsed
-        End If
-    End Sub
+#Region "鼠标点击高级选项显示/隐藏，已迁移至 mouseclick_cdlg"
+    'Private Sub click_adv_Click(sender As Object, e As RoutedEventArgs)
+    'If click_adv.IsChecked = True Then
+    'click_x.Visibility = Visibility.Visible
+    'click_x_text.Visibility = Visibility.Visible
+    'click_y.Visibility = Visibility.Visible
+    'click_y_text.Visibility = Visibility.Visible
+    'click_times_text.Visibility = Visibility.Visible
+    'click_times.Visibility = Visibility.Visible
+    'click_move_s_text.Visibility = Visibility.Visible
+    'click_move_s.Visibility = Visibility.Visible
+    'Else
+    'click_x.Visibility = Visibility.Collapsed
+    'click_x_text.Visibility = Visibility.Collapsed
+    'click_y.Visibility = Visibility.Collapsed
+    'click_y_text.Visibility = Visibility.Collapsed
+    'click_times_text.Visibility = Visibility.Collapsed
+    'click_times.Visibility = Visibility.Collapsed
+    'click_move_s_text.Visibility = Visibility.Collapsed
+    'click_move_s.Visibility = Visibility.Collapsed
+    'End If
+    'End Sub
 #End Region
 
-#Region "生成 MouseClick 代码"
-    Private Sub btn_insertclick_click_Click(sender As Object, e As RoutedEventArgs)
-        Dim addcode As String = Nothing
-        Dim clickkey As String = Nothing
-        Select Case click_key.SelectedIndex
-            Case 0
-                clickkey = "left"
-            Case 1
-                clickkey = "middle"
-            Case 2
-                clickkey = "right"
-            Case 3
-                clickkey = "primary"
-            Case Else
-                clickkey = "secondary"
-        End Select
-        If click_adv.IsChecked = True Then
-            addcode = "mouseclick(""" + clickkey + """"
-            If click_x.Text <> "" AndAlso click_y.Text <> "" Then
-                addcode = addcode + "," + click_x.Text + "," + click_y.Text
-                If click_times.Text <> "" Then
-                    addcode = addcode + "," + click_times.Text
-                    addcode = addcode + "," + (Math.Abs(click_move_s.Value).ToString())
-                End If
-            End If
-            addcode = addcode + ")"
-        Else
-            addcode = "mouseclick(""" + clickkey + """)"
-        End If
-        rawcode.Text = rawcode.Text + addcode.Trim() + vbCrLf
-        '执行完成之后恢复初始设置
-        click_key.SelectedIndex = 3
-        click_x.Text = ""
-        click_y.Text = ""
-        click_times.Text = ""
-        click_move_s.Value = -10
-    End Sub
+#Region "生成 MouseClick 代码，已迁移至 mouseclick_cdlg"
+    'Private Sub btn_insertclick_click_Click(sender As Object, e As RoutedEventArgs)
+    'Dim addcode As String = Nothing
+    'Dim clickkey As String = Nothing
+    'Select Case click_key.SelectedIndex
+    'Case 0
+    'clickkey = "left"
+    'Case 1
+    'clickkey = "middle"
+    'Case 2
+    'clickkey = "right"
+    'Case 3
+    'clickkey = "primary"
+    'Case Else
+    'clickkey = "secondary"
+    'End Select
+    'If click_adv.IsChecked = True Then
+    'addcode = "mouseclick(""" + clickkey + """"
+    'If click_x.Text <> "" AndAlso click_y.Text <> "" Then
+    'addcode = addcode + "," + click_x.Text + "," + click_y.Text
+    'If click_times.Text <> "" Then
+    'addcode = addcode + "," + click_times.Text
+    'addcode = addcode + "," + (Math.Abs(click_move_s.Value).ToString())
+    'End If
+    'End If
+    'addcode = addcode + ")"
+    'Else
+    'addcode = "mouseclick(""" + clickkey + """)"
+    'End If
+    'rawcode.Text = rawcode.Text + addcode.Trim() + vbCrLf
+    '执行完成之后恢复初始设置
+    'click_key.SelectedIndex = 3
+    'click_x.Text = ""
+    'click_y.Text = ""
+    'click_times.Text = ""
+    'click_move_s.Value = -10
+    'End Sub
 #End Region
 
     Private Sub send_key_Click(sender As Object, e As RoutedEventArgs)
@@ -402,8 +414,7 @@ Public NotInheritable Class MainPage
     End Sub
 #End Region
 
-#Region "生成 Sleep 代码"
-    '由于转移到了 sleep_cdlg，所以这段位于 sleep_fly 的代码不再可以访问
+#Region "生成 Sleep 代码，已迁移至 sleep_cdlg"
     'Private Sub btn_sleep_Click(sender As Object, e As RoutedEventArgs)
     'Dim addcode As String = Nothing
     'addcode = "sleep(" + sleep_times.Text + ")"
@@ -476,7 +487,7 @@ Public NotInheritable Class MainPage
     Private Sub Mainpage_Loaded(sender As Object, e As RoutedEventArgs)
         If Windows.System.Profile.AnalyticsInfo.VersionInfo.DeviceFamily = "Windows.Mobile" Then
             winevt.Visibility = Visibility.Collapsed
-            mousekey.Visibility = Visibility.Collapsed
+            'mousekey.Visibility = Visibility.Collapsed
             clickbtn.Visibility = Visibility.Collapsed
             cclickbtn.Visibility = Visibility.Collapsed
             'timerbtn.Visibility = Visibility.Collapsed
