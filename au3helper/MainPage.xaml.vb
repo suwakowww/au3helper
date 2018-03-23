@@ -285,6 +285,32 @@ Public NotInheritable Class MainPage
         If Window.Current.Bounds.Width < Window.Current.Bounds.Height Then
             '先想想
         End If
+        If Window.Current.Bounds.Width < 480 Then
+            '由于这种水平分辨率太小，隐藏这些功能
+            winevt.Visibility = Visibility.Collapsed
+            mousekey.Visibility = Visibility.Collapsed
+            clickbtn.Visibility = Visibility.Collapsed
+            cclickbtn.Visibility = Visibility.Collapsed
+            timerbtn.Visibility = Visibility.Collapsed
+            runbtn.Visibility = Visibility.Collapsed
+            low_width.Visibility = Visibility.Visible
+        End If
+    End Sub
+
+    Private Async Sub low_width_Click(sender As Object, e As RoutedEventArgs)
+        Dim low_width_dlg As New ContentDialog With
+            {
+                .Title = "一部分功能已禁用",
+                .Content = "由于屏幕宽度太低，无法完整显示所有内容，故禁用了一部分功能。" + vbCrLf + "请考虑降低 DPI 设置使用。" + vbCrLf + "（可能需要重启）",
+                .PrimaryButtonText = "显示设置",
+                .SecondaryButtonText = "关闭"
+            }
+        AddHandler low_width_dlg.PrimaryButtonClick, AddressOf to_display_settings
+        Await low_width_dlg.ShowAsync()
+    End Sub
+
+    Private Async Sub to_display_settings(sender As ContentDialog, args As ContentDialogButtonClickEventArgs)
+        Await Windows.System.Launcher.LaunchUriAsync(New Uri("ms-settings:display"))
     End Sub
 
     'Private Sub l_d_toggle_Click(sender As Object, e As RoutedEventArgs)
