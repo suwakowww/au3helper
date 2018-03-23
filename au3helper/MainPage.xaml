@@ -62,7 +62,8 @@
         -->
         <!--#endregion-->
         
-        <!--#region 发送按键设置-->
+        <!--#region 发送按键设置，已迁移至 sendkey_cdlg-->
+        <!--
         <Flyout x:Name="sendkey_fly">
             <Grid>
                 <StackPanel>
@@ -79,6 +80,7 @@
                 </StackPanel>
             </Grid>
         </Flyout>
+        -->
         <!--#endregion-->
         
         <!--#region 控件点击设置-->

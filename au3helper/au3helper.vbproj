@@ -113,6 +113,9 @@
       <DependentUpon>mousemove_cdlg.xaml</DependentUpon>
     </Compile>
     <Compile Include="My Project\AssemblyInfo.vb" />
+    <Compile Include="sendkey_cdlg.xaml.vb">
+      <DependentUpon>sendkey_cdlg.xaml</DependentUpon>
+    </Compile>
     <Compile Include="sleep_cdlg.xaml.vb">
       <DependentUpon>sleep_cdlg.xaml</DependentUpon>
     </Compile>
@@ -148,6 +151,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="mousemove_cdlg.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="sendkey_cdlg.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -186,45 +186,45 @@ Public NotInheritable Class MainPage
         Return result
     End Function
 
-#Region "生成 Send 代码"
-    Private Sub btn_insertkey_Click(sender As Object, e As RoutedEventArgs)
-        Dim addcode As String = Nothing
-        Dim hotkey As String = Nothing
-        If key_a.IsChecked = True Then
-            hotkey = hotkey + "!"
-        End If
-        If key_s.IsChecked = True Then
-            hotkey = hotkey + "+"
-        End If
-        If key_c.IsChecked = True Then
-            hotkey = hotkey + "^"
-        End If
-        If key_w.IsChecked = True Then
-            hotkey = hotkey + "#"
-        End If
-        If key_raw.IsOn Then
-            addcode = "send(""" + insertkey.Text + """,1)"
-        Else
-            addcode = "send(""" + hotkey + insertkey.Text + """)"
-        End If
-        rawcode.Text = rawcode.Text + addcode.Trim() + vbCrLf
-    End Sub
+#Region "生成 Send 代码，已迁移至 sendkey_cdlg"
+    'Private Sub btn_insertkey_Click(sender As Object, e As RoutedEventArgs)
+    '    Dim addcode As String = Nothing
+    '    Dim hotkey As String = Nothing
+    '    If key_a.IsChecked = True Then
+    '        hotkey = hotkey + "!"
+    '    End If
+    '    If key_s.IsChecked = True Then
+    '        hotkey = hotkey + "+"
+    '    End If
+    '    If key_c.IsChecked = True Then
+    '        hotkey = hotkey + "^"
+    '    End If
+    '    If key_w.IsChecked = True Then
+    '        hotkey = hotkey + "#"
+    '    End If
+    '    If key_raw.IsOn Then
+    '        addcode = "send(""" + insertkey.Text + """,1)"
+    '    Else
+    '        addcode = "send(""" + hotkey + insertkey.Text + """)"
+    '    End If
+    '    rawcode.Text = rawcode.Text + addcode.Trim() + vbCrLf
+    'End Sub
 #End Region
 
-#Region "键盘原始输入开关"
-    Private Sub key_raw_Toggled(sender As Object, e As RoutedEventArgs)
-        If key_raw.IsOn Then
-            key_a.IsEnabled = False
-            key_c.IsEnabled = False
-            key_s.IsEnabled = False
-            key_w.IsEnabled = False
-        Else
-            key_a.IsEnabled = True
-            key_c.IsEnabled = True
-            key_s.IsEnabled = True
-            key_w.IsEnabled = True
-        End If
-    End Sub
+#Region "键盘原始输入开关，已迁移至 sendkey_cdlg"
+    'Private Sub key_raw_Toggled(sender As Object, e As RoutedEventArgs)
+    '    If key_raw.IsOn Then
+    '        key_a.IsEnabled = False
+    '        key_c.IsEnabled = False
+    '        key_s.IsEnabled = False
+    '        key_w.IsEnabled = False
+    '    Else
+    '        key_a.IsEnabled = True
+    '        key_c.IsEnabled = True
+    '        key_s.IsEnabled = True
+    '        key_w.IsEnabled = True
+    '    End If
+    'End Sub
 #End Region
 
     Private Async Sub m_move_Click(sender As Object, e As RoutedEventArgs)
@@ -338,8 +338,14 @@ Public NotInheritable Class MainPage
     'End Sub
 #End Region
 
-    Private Sub send_key_Click(sender As Object, e As RoutedEventArgs)
-        sendkey_fly.ShowAt(send_key)
+    Private Async Sub send_key_Click(sender As Object, e As RoutedEventArgs)
+        'sendkey_fly.ShowAt(send_key)
+        Dim sendkey_dlg As New sendkey_cdlg
+        Dim sendkey_dlg_r As ContentDialogResult
+        sendkey_dlg_r = Await sendkey_dlg.ShowAsync()
+        If sendkey_dlg_r = ContentDialogResult.Primary Then
+            rawcode.Text = rawcode.Text + sendkey_dlg.addcode.Trim() + vbCrLf
+        End If
     End Sub
 
     Private Sub c_click_Click(sender As Object, e As RoutedEventArgs)
