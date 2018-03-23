@@ -1,5 +1,9 @@
 ﻿' 空白ページの項目テンプレートについては、https://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x411 を参照してください
 Imports System.Text.RegularExpressions
+Imports Windows.Storage
+Imports Windows.Storage.Pickers
+Imports Windows.Storage.Streams
+Imports Windows.UI.Popups
 
 ''' <summary>
 ''' それ自体で使用できる空白ページまたはフレーム内に移動できる空白ページ。
@@ -75,7 +79,7 @@ Public NotInheritable Class MainPage
                 result = result.Replace("!", "Alt+")
                 result = result.Replace("^", "Ctrl+")
                 result = result.Replace("#", "Win+")
-            ElseIf Regex.matches(src, "send\(""(.+?)""(,1)?\)", RegexOptions.IgnoreCase).Count > 0 Then
+            ElseIf Regex.Matches(src, "send\(""(.+?)""(,1)?\)", RegexOptions.IgnoreCase).Count > 0 Then
                 result = Regex.Replace(src, "send\(""(.+?)""(,1)?\)", "发送按键 $1", RegexOptions.IgnoreCase)
             Else
                 result = "语法错误：" + src
@@ -312,6 +316,73 @@ Public NotInheritable Class MainPage
     Private Async Sub to_display_settings(sender As ContentDialog, args As ContentDialogButtonClickEventArgs)
         Await Windows.System.Launcher.LaunchUriAsync(New Uri("ms-settings:display"))
     End Sub
+
+    Private Sub left_menu_Click(sender As Object, e As RoutedEventArgs)
+        mainsplit.IsPaneOpen = Not mainsplit.IsPaneOpen
+    End Sub
+
+    Private Async Sub s_save_Tapped(sender As Object, e As TappedRoutedEventArgs)
+        '保存文件
+        s_save.IsSelected = False
+        Dim write_data As String = rawcode.Text
+        Dim savefile As New FileSavePicker
+        Dim filetype As New Object
+        filetype = {".au3"}
+        savefile.FileTypeChoices.Add("Autoit 3 Script", filetype)
+        s_save.IsSelected = False
+        Dim tofile As StorageFile = Await savefile.PickSaveFileAsync()
+        If tofile IsNot Nothing Then
+            Using transaction As StorageStreamTransaction = Await tofile.OpenTransactedWriteAsync
+                Using textwrite As DataWriter = New DataWriter(transaction.Stream)
+                    textwrite.WriteString(write_data)
+                    transaction.Stream.Size = Await textwrite.StoreAsync()
+                    Await transaction.CommitAsync()
+                End Using
+            End Using
+        End If
+        mainsplit.IsPaneOpen = Not mainsplit.IsPaneOpen
+    End Sub
+
+    Private Async Sub s_open_Tapped(sender As Object, e As TappedRoutedEventArgs)
+        '读取文件
+        s_open.IsSelected = False
+        Dim fileopen As New FileOpenPicker()
+        fileopen.FileTypeFilter.Add(".au3")
+        Dim sfile As StorageFile = Await fileopen.PickSingleFileAsync()
+        If sfile IsNot Nothing Then
+            Using readstream As IRandomAccessStream = Await sfile.OpenAsync(FileAccessMode.Read)
+                Using textread As DataReader = New DataReader(readstream)
+                    Dim size As UInt64 = readstream.Size
+                    If size <= UInt32.MaxValue Then
+                        Dim numbytesloaded As UInt32 = Await textread.LoadAsync(Convert.ToInt32(size))
+                        Dim filecontent As String = textread.ReadString(numbytesloaded)
+                        rawcode.Text = filecontent
+                    End If
+                End Using
+            End Using
+        End If
+        mainsplit.IsPaneOpen = Not mainsplit.IsPaneOpen
+    End Sub
+
+    Private Async Sub s_new_Tapped(sender As Object, e As TappedRoutedEventArgs)
+        '新建文件（清空）
+        s_new.IsSelected = False
+        If rawcode.Text <> "" Then
+            Dim clearwarn As New MessageDialog("确定要新建文件吗？", "警告")
+            clearwarn.Commands.Add((New UICommand("确定", AddressOf clearcode, commandId:=0)))
+            clearwarn.Commands.Add((New UICommand("取消", AddressOf clearcode, commandId:=1)))
+            Dim result As Object = Await clearwarn.ShowAsync()
+        End If
+        mainsplit.IsPaneOpen = Not mainsplit.IsPaneOpen
+    End Sub
+
+    Private Sub clearcode(command As IUICommand)
+        'Throw New NotImplementedException()
+        If command.Id = 0 Then
+            rawcode.Text = ""
+        End If
+    End Sub
+
 
     'Private Sub l_d_toggle_Click(sender As Object, e As RoutedEventArgs)
     'If CType(Window.Current.Content, Frame).RequestedTheme = ApplicationTheme.Light Then

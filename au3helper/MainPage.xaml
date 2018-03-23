@@ -18,7 +18,13 @@
     <Page.TopAppBar>
         <CommandBar>
             <CommandBar.Content>
-                <Grid/>
+                <Grid>
+                    <AppBarButton x:Name="left_menu" Width="48" IsCompact="True" Click="left_menu_Click">
+                        <AppBarButton.Icon>
+                            <FontIcon Glyph="&#xe700;"></FontIcon>
+                        </AppBarButton.Icon>
+                    </AppBarButton>
+                </Grid>
             </CommandBar.Content>
             <!--
             <AppBarButton Label="预览">
@@ -108,29 +114,42 @@
     </Page.TopAppBar>
     <!--#endregion-->
 
-    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" Padding="0,4">
-        <Grid>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition />
-                <ColumnDefinition />
-            </Grid.ColumnDefinitions>
-            <Grid Grid.Column="0">
-                <ScrollViewer>
-                    <StackPanel Padding="12,0">
-                        <TextBlock HorizontalAlignment="Left">源代码</TextBlock>
-                        <TextBox x:Name="rawcode" PlaceholderText="在这里输入代码..." AcceptsReturn="True" TextWrapping="Wrap" LostFocus="rawcode_LostFocus"/>
-                    </StackPanel>
-                </ScrollViewer>
-            </Grid>
-            <Grid Grid.Column="1">
-                <ScrollViewer>
-                    <StackPanel Padding="12,0">
-                        <TextBlock>事件过程</TextBlock>
-                        <TextBlock x:Name="converted" TextWrapping="Wrap"></TextBlock>
-                    </StackPanel>
-                </ScrollViewer>
-                <ProgressRing x:Name="converting" IsActive="False" Width="100" Height="100" />
-            </Grid>
-        </Grid>
+    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+        <SplitView x:Name="mainsplit">
+            <SplitView.Pane>
+                <Grid>
+                    <ListView>
+                        <ListViewItem x:Name="s_new" Tapped="s_new_Tapped">新建</ListViewItem>
+                        <ListViewItem x:Name="s_open" Tapped="s_open_Tapped">打开</ListViewItem>
+                        <ListViewItem x:Name="s_save" Tapped="s_save_Tapped">保存</ListViewItem>
+                    </ListView>
+                </Grid>
+            </SplitView.Pane>
+            <SplitView.Content>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
+                    <Grid Grid.Column="0">
+                        <ScrollViewer>
+                            <StackPanel Padding="12,0">
+                                <TextBlock HorizontalAlignment="Left">源代码</TextBlock>
+                                <TextBox x:Name="rawcode" PlaceholderText="在这里输入代码..." AcceptsReturn="True" TextWrapping="Wrap" LostFocus="rawcode_LostFocus"/>
+                            </StackPanel>
+                        </ScrollViewer>
+                    </Grid>
+                    <Grid Grid.Column="1">
+                        <ScrollViewer>
+                            <StackPanel Padding="12,0">
+                                <TextBlock>事件过程</TextBlock>
+                                <TextBlock x:Name="converted" TextWrapping="Wrap"></TextBlock>
+                            </StackPanel>
+                        </ScrollViewer>
+                        <ProgressRing x:Name="converting" IsActive="False" Width="100" Height="100" />
+                    </Grid>
+                </Grid>
+            </SplitView.Content>
+        </SplitView>
     </Grid>
 </Page>
