@@ -31,7 +31,7 @@
         -->
         <!--#endregion-->
         
-        <!--#region 点击鼠标设置，已迁移至 moudeclick_dlg-->
+        <!--#region 点击鼠标设置，已迁移至 moudeclick_cdlg-->
         <!--
         <Flyout x:Name="mouseclick_fly">
             <Grid>
@@ -83,7 +83,8 @@
         -->
         <!--#endregion-->
         
-        <!--#region 控件点击设置-->
+        <!--#region 控件点击设置，已迁移至 controlclick_cdlg-->
+        <!--
         <Flyout x:Name="controlclick_fly">
             <Grid>
                 <StackPanel>
@@ -110,6 +111,7 @@
                 </StackPanel>
             </Grid>
         </Flyout>
+        -->
         <!--#endregion-->
 
         <!--#region 暂停设置，已迁移至 sleep_cdlg-->
@@ -126,7 +128,7 @@
         -->
         <!--#endregion-->
 
-        <!--#region  窗口等待-->
+        <!--#region 窗口等待-->
         <Flyout x:Name="winwait_fly">
             <Grid>
                 <StackPanel>

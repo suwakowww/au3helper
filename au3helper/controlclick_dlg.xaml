@@ -1,0 +1,40 @@
+﻿<ContentDialog
+    x:Class="au3helper.controlclick_dlg"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:au3helper"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Title="控件点击"
+    PrimaryButtonText="插入"
+    SecondaryButtonText="关闭"
+    PrimaryButtonClick="ContentDialog_PrimaryButtonClick"
+    SecondaryButtonClick="ContentDialog_SecondaryButtonClick" Loaded="ContentDialog_Loaded">
+
+    <Grid>
+        <ScrollViewer x:Name="scrollbar">
+            <StackPanel Margin="0,0,12,0">
+                <TextBlock>查找窗口标题</TextBlock>
+                <TextBox x:Name="c_click_title" Margin="0,4"></TextBox>
+                <TextBlock>查找窗口内可见字符串</TextBlock>
+                <TextBox x:Name="c_click_string" Margin="0,4"></TextBox>
+                <TextBlock>窗口内控件 ID</TextBlock>
+                <TextBox x:Name="c_click_id" Margin="0,4"></TextBox>
+                <CheckBox x:Name="c_click_adv" Content="显示高级选项" Click="c_click_adv_Click"/>
+                <TextBlock x:Name="c_click_key_text" Visibility="Collapsed">点击按键</TextBlock>
+                <TextBlock x:Name="c_click_key_text2" Width="300" TextWrapping="Wrap" Foreground="{ThemeResource HyperlinkForegroundThemeBrush}" Visibility="Collapsed">默认情况下，主要按键为鼠标左键，但如果在左手模式的情况下，主要按键为右键。</TextBlock>
+                <TextBlock x:Name="c_click_key_text3" Width="300" TextWrapping="Wrap" Foreground="{ThemeResource HyperlinkForegroundThemeBrush}" Visibility="Collapsed">但是，如果设置了鼠标左键或者鼠标右键，则始终会按下鼠标左键或者鼠标右键。</TextBlock>
+                <ComboBox x:Name="c_click_key" SelectedIndex="3" Margin="0,4" Visibility="Collapsed">
+                    <ComboBoxItem>左键</ComboBoxItem>
+                    <ComboBoxItem>中键</ComboBoxItem>
+                    <ComboBoxItem>右键</ComboBoxItem>
+                    <ComboBoxItem>主要按键</ComboBoxItem>
+                    <ComboBoxItem>次要按键</ComboBoxItem>
+                </ComboBox>
+                <TextBlock x:Name="c_click_times_text" Visibility="Collapsed">点击次数</TextBlock>
+                <TextBox x:Name="c_click_times" Margin="0,4" Visibility="Collapsed"/>
+            </StackPanel>
+        </ScrollViewer>
+    </Grid>
+</ContentDialog>

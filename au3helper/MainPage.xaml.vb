@@ -263,81 +263,6 @@ Public NotInheritable Class MainPage
         End If
     End Sub
 
-#Region "鼠标移动高级选项显示/隐藏，已迁移至 mousemove_cdlg"
-    'Private Sub move_adv_Click(sender As Object, e As RoutedEventArgs)
-    'If move_adv.isChecked = True Then
-    'move_s.Visibility = Visibility.Visible
-    'move_text_s.Visibility = Visibility.Visible
-    'Else
-    'move_s.Visibility = Visibility.Collapsed
-    'move_text_s.Visibility = Visibility.Collapsed
-    'End If
-    'End Sub
-#End Region
-
-#Region "鼠标点击高级选项显示/隐藏，已迁移至 mouseclick_cdlg"
-    'Private Sub click_adv_Click(sender As Object, e As RoutedEventArgs)
-    'If click_adv.IsChecked = True Then
-    'click_x.Visibility = Visibility.Visible
-    'click_x_text.Visibility = Visibility.Visible
-    'click_y.Visibility = Visibility.Visible
-    'click_y_text.Visibility = Visibility.Visible
-    'click_times_text.Visibility = Visibility.Visible
-    'click_times.Visibility = Visibility.Visible
-    'click_move_s_text.Visibility = Visibility.Visible
-    'click_move_s.Visibility = Visibility.Visible
-    'Else
-    'click_x.Visibility = Visibility.Collapsed
-    'click_x_text.Visibility = Visibility.Collapsed
-    'click_y.Visibility = Visibility.Collapsed
-    'click_y_text.Visibility = Visibility.Collapsed
-    'click_times_text.Visibility = Visibility.Collapsed
-    'click_times.Visibility = Visibility.Collapsed
-    'click_move_s_text.Visibility = Visibility.Collapsed
-    'click_move_s.Visibility = Visibility.Collapsed
-    'End If
-    'End Sub
-#End Region
-
-#Region "生成 MouseClick 代码，已迁移至 mouseclick_cdlg"
-    'Private Sub btn_insertclick_click_Click(sender As Object, e As RoutedEventArgs)
-    'Dim addcode As String = Nothing
-    'Dim clickkey As String = Nothing
-    'Select Case click_key.SelectedIndex
-    'Case 0
-    'clickkey = "left"
-    'Case 1
-    'clickkey = "middle"
-    'Case 2
-    'clickkey = "right"
-    'Case 3
-    'clickkey = "primary"
-    'Case Else
-    'clickkey = "secondary"
-    'End Select
-    'If click_adv.IsChecked = True Then
-    'addcode = "mouseclick(""" + clickkey + """"
-    'If click_x.Text <> "" AndAlso click_y.Text <> "" Then
-    'addcode = addcode + "," + click_x.Text + "," + click_y.Text
-    'If click_times.Text <> "" Then
-    'addcode = addcode + "," + click_times.Text
-    'addcode = addcode + "," + (Math.Abs(click_move_s.Value).ToString())
-    'End If
-    'End If
-    'addcode = addcode + ")"
-    'Else
-    'addcode = "mouseclick(""" + clickkey + """)"
-    'End If
-    'rawcode.Text = rawcode.Text + addcode.Trim() + vbCrLf
-    '执行完成之后恢复初始设置
-    'click_key.SelectedIndex = 3
-    'click_x.Text = ""
-    'click_y.Text = ""
-    'click_times.Text = ""
-    'click_move_s.Value = -10
-    'End Sub
-#End Region
-
     Private Async Sub send_key_Click(sender As Object, e As RoutedEventArgs)
         'sendkey_fly.ShowAt(send_key)
         Dim sendkey_dlg As New sendkey_cdlg
@@ -348,8 +273,14 @@ Public NotInheritable Class MainPage
         End If
     End Sub
 
-    Private Sub c_click_Click(sender As Object, e As RoutedEventArgs)
-        controlclick_fly.ShowAt(c_click)
+    Private Async Sub c_click_Click(sender As Object, e As RoutedEventArgs)
+        'controlclick_fly.ShowAt(c_click)
+        Dim controlclick_dlg As New controlclick_dlg
+        Dim controlclick_dlg_r As ContentDialogResult
+        controlclick_dlg_r = Await controlclick_dlg.ShowAsync()
+        If controlclick_dlg_r = ContentDialogResult.Primary Then
+            rawcode.Text = rawcode.Text + controlclick_dlg.addcode.Trim() + vbCrLf
+        End If
     End Sub
 
     Private Async Sub sleep_Click(sender As Object, e As RoutedEventArgs)
@@ -365,59 +296,59 @@ Public NotInheritable Class MainPage
         End If
     End Sub
 
-#Region "控件点击高级选项显示/隐藏"
-    Private Sub c_click_adv_Click(sender As Object, e As RoutedEventArgs)
-        If c_click_adv.IsChecked = True Then
-            c_click_key.Visibility = Visibility.Visible
-            c_click_key_text.Visibility = Visibility.Visible
-            c_click_key_text2.Visibility = Visibility.Visible
-            c_click_key_text3.Visibility = Visibility.Visible
-            c_click_times_text.Visibility = Visibility.Visible
-            c_click_times.Visibility = Visibility.Visible
-        Else
-            c_click_key.Visibility = Visibility.Collapsed
-            c_click_key_text.Visibility = Visibility.Collapsed
-            c_click_key_text2.Visibility = Visibility.Collapsed
-            c_click_key_text3.Visibility = Visibility.Collapsed
-            c_click_times_text.Visibility = Visibility.Collapsed
-            c_click_times.Visibility = Visibility.Collapsed
-        End If
-    End Sub
+#Region "控件点击高级选项显示/隐藏，已迁移至 controlclick_cdlg"
+    'Private Sub c_click_adv_Click(sender As Object, e As RoutedEventArgs)
+    '    If c_click_adv.IsChecked = True Then
+    '        c_click_key.Visibility = Visibility.Visible
+    '        c_click_key_text.Visibility = Visibility.Visible
+    '        c_click_key_text2.Visibility = Visibility.Visible
+    '        c_click_key_text3.Visibility = Visibility.Visible
+    '        c_click_times_text.Visibility = Visibility.Visible
+    '        c_click_times.Visibility = Visibility.Visible
+    '    Else
+    '        c_click_key.Visibility = Visibility.Collapsed
+    '        c_click_key_text.Visibility = Visibility.Collapsed
+    '        c_click_key_text2.Visibility = Visibility.Collapsed
+    '        c_click_key_text3.Visibility = Visibility.Collapsed
+    '        c_click_times_text.Visibility = Visibility.Collapsed
+    '        c_click_times.Visibility = Visibility.Collapsed
+    '    End If
+    'End Sub
 
 #End Region
 
-#Region "生成 ControlClick 代码"
-    Private Sub btn_controlclick_Click(sender As Object, e As RoutedEventArgs)
-        Dim addcode As String = Nothing
-        Dim clickkey As String = Nothing
-        Select Case c_click_key.SelectedIndex
-            Case 0
-                clickkey = "left"
-            Case 1
-                clickkey = "middle"
-            Case 2
-                clickkey = "right"
-            Case 3
-                clickkey = "primary"
-            Case Else
-                clickkey = "secondary"
-        End Select
-        If c_click_adv.IsChecked = True Then
-            addcode = "controlclick(""" + c_click_title.Text + """,""" + c_click_string.Text + """," + c_click_id.Text + ",""" + clickkey + """"
-            If c_click_times.Text <> "" Then
-                addcode = addcode + "," + c_click_times.Text
-            End If
-            addcode = addcode + ")"
-        Else
-            addcode = "controlclick(""" + c_click_title.Text + """,""" + c_click_string.Text + """," + c_click_id.Text + ")"
-        End If
-        rawcode.Text = rawcode.Text + addcode.Trim() + vbCrLf
-        c_click_title.Text = ""
-        c_click_string.Text = ""
-        c_click_id.Text = ""
-        c_click_key.SelectedIndex = 3
-        c_click_times.Text = ""
-    End Sub
+#Region "生成 ControlClick 代码，已迁移至 controlclick_cdlg"
+    'Private Sub btn_controlclick_Click(sender As Object, e As RoutedEventArgs)
+    '    Dim addcode As String = Nothing
+    '    Dim clickkey As String = Nothing
+    '    Select Case c_click_key.SelectedIndex
+    '        Case 0
+    '            clickkey = "left"
+    '        Case 1
+    '            clickkey = "middle"
+    '        Case 2
+    '            clickkey = "right"
+    '        Case 3
+    '            clickkey = "primary"
+    '        Case Else
+    '            clickkey = "secondary"
+    '    End Select
+    '    If c_click_adv.IsChecked = True Then
+    '        addcode = "controlclick(""" + c_click_title.Text + """,""" + c_click_string.Text + """," + c_click_id.Text + ",""" + clickkey + """"
+    '        If c_click_times.Text <> "" Then
+    '            addcode = addcode + "," + c_click_times.Text
+    '        End If
+    '        addcode = addcode + ")"
+    '    Else
+    '        addcode = "controlclick(""" + c_click_title.Text + """,""" + c_click_string.Text + """," + c_click_id.Text + ")"
+    '    End If
+    '    rawcode.Text = rawcode.Text + addcode.Trim() + vbCrLf
+    '    c_click_title.Text = ""
+    '    c_click_string.Text = ""
+    '    c_click_id.Text = ""
+    '    c_click_key.SelectedIndex = 3
+    '    c_click_times.Text = ""
+    'End Sub
 #End Region
 
 #Region "生成 Sleep 代码，已迁移至 sleep_cdlg"
@@ -494,8 +425,8 @@ Public NotInheritable Class MainPage
         If Windows.System.Profile.AnalyticsInfo.VersionInfo.DeviceFamily = "Windows.Mobile" Then
             winevt.Visibility = Visibility.Collapsed
             'mousekey.Visibility = Visibility.Collapsed
-            clickbtn.Visibility = Visibility.Collapsed
-            cclickbtn.Visibility = Visibility.Collapsed
+            'clickbtn.Visibility = Visibility.Collapsed
+            'cclickbtn.Visibility = Visibility.Collapsed
             'timerbtn.Visibility = Visibility.Collapsed
             runbtn.Visibility = Visibility.Collapsed
         End If
