@@ -178,54 +178,13 @@ Public NotInheritable Class MainPage
             End If
 #End Region
 
-                Else
-                '语法错误，或者不支持，则原样输出
-                result = src
+        Else
+            '语法错误，或者不支持，则原样输出
+            result = src
         End If
         result = result + vbLf
         Return result
     End Function
-
-#Region "生成 Send 代码，已迁移至 sendkey_cdlg"
-    'Private Sub btn_insertkey_Click(sender As Object, e As RoutedEventArgs)
-    '    Dim addcode As String = Nothing
-    '    Dim hotkey As String = Nothing
-    '    If key_a.IsChecked = True Then
-    '        hotkey = hotkey + "!"
-    '    End If
-    '    If key_s.IsChecked = True Then
-    '        hotkey = hotkey + "+"
-    '    End If
-    '    If key_c.IsChecked = True Then
-    '        hotkey = hotkey + "^"
-    '    End If
-    '    If key_w.IsChecked = True Then
-    '        hotkey = hotkey + "#"
-    '    End If
-    '    If key_raw.IsOn Then
-    '        addcode = "send(""" + insertkey.Text + """,1)"
-    '    Else
-    '        addcode = "send(""" + hotkey + insertkey.Text + """)"
-    '    End If
-    '    rawcode.Text = rawcode.Text + addcode.Trim() + vbCrLf
-    'End Sub
-#End Region
-
-#Region "键盘原始输入开关，已迁移至 sendkey_cdlg"
-    'Private Sub key_raw_Toggled(sender As Object, e As RoutedEventArgs)
-    '    If key_raw.IsOn Then
-    '        key_a.IsEnabled = False
-    '        key_c.IsEnabled = False
-    '        key_s.IsEnabled = False
-    '        key_w.IsEnabled = False
-    '    Else
-    '        key_a.IsEnabled = True
-    '        key_c.IsEnabled = True
-    '        key_s.IsEnabled = True
-    '        key_w.IsEnabled = True
-    '    End If
-    'End Sub
-#End Region
 
     Private Async Sub m_move_Click(sender As Object, e As RoutedEventArgs)
         'mousemove_fly.ShowAt(m_move)
@@ -236,22 +195,6 @@ Public NotInheritable Class MainPage
             rawcode.Text = rawcode.Text + mousefly_dlg.addcode + vbCrLf
         End If
     End Sub
-
-#Region "生成 MouseMove 代码，已迁移至 mousemove_cdlg"
-    'Private Sub btn_insertmmove_Click(sender As Object, e As RoutedEventArgs)
-    'Dim addcode As String = Nothing
-    'If move_adv.IsChecked = True Then
-    'addcode = "mousemove(" + move_x.Text + "," + move_y.Text + "," + (Math.Abs(move_s.Value).ToString) + ")"
-    'Else
-    'addcode = "mousemove(" + move_x.Text + "," + move_y.Text + ")"
-    'End If
-    'rawcode.Text = rawcode.Text + addcode.Trim() + vbCrLf
-    '执行完成之后恢复初始设置
-    'move_x.Text = ""
-    'move_y.Text = ""
-    'move_s.Value = -10
-    'End Sub
-#End Region
 
     Private Async Sub m_click_Click(sender As Object, e As RoutedEventArgs)
         'mouseclick_fly.ShowAt(m_click)
@@ -296,103 +239,24 @@ Public NotInheritable Class MainPage
         End If
     End Sub
 
-#Region "控件点击高级选项显示/隐藏，已迁移至 controlclick_cdlg"
-    'Private Sub c_click_adv_Click(sender As Object, e As RoutedEventArgs)
-    '    If c_click_adv.IsChecked = True Then
-    '        c_click_key.Visibility = Visibility.Visible
-    '        c_click_key_text.Visibility = Visibility.Visible
-    '        c_click_key_text2.Visibility = Visibility.Visible
-    '        c_click_key_text3.Visibility = Visibility.Visible
-    '        c_click_times_text.Visibility = Visibility.Visible
-    '        c_click_times.Visibility = Visibility.Visible
-    '    Else
-    '        c_click_key.Visibility = Visibility.Collapsed
-    '        c_click_key_text.Visibility = Visibility.Collapsed
-    '        c_click_key_text2.Visibility = Visibility.Collapsed
-    '        c_click_key_text3.Visibility = Visibility.Collapsed
-    '        c_click_times_text.Visibility = Visibility.Collapsed
-    '        c_click_times.Visibility = Visibility.Collapsed
-    '    End If
-    'End Sub
-
-#End Region
-
-#Region "生成 ControlClick 代码，已迁移至 controlclick_cdlg"
-    'Private Sub btn_controlclick_Click(sender As Object, e As RoutedEventArgs)
-    '    Dim addcode As String = Nothing
-    '    Dim clickkey As String = Nothing
-    '    Select Case c_click_key.SelectedIndex
-    '        Case 0
-    '            clickkey = "left"
-    '        Case 1
-    '            clickkey = "middle"
-    '        Case 2
-    '            clickkey = "right"
-    '        Case 3
-    '            clickkey = "primary"
-    '        Case Else
-    '            clickkey = "secondary"
-    '    End Select
-    '    If c_click_adv.IsChecked = True Then
-    '        addcode = "controlclick(""" + c_click_title.Text + """,""" + c_click_string.Text + """," + c_click_id.Text + ",""" + clickkey + """"
-    '        If c_click_times.Text <> "" Then
-    '            addcode = addcode + "," + c_click_times.Text
-    '        End If
-    '        addcode = addcode + ")"
-    '    Else
-    '        addcode = "controlclick(""" + c_click_title.Text + """,""" + c_click_string.Text + """," + c_click_id.Text + ")"
-    '    End If
-    '    rawcode.Text = rawcode.Text + addcode.Trim() + vbCrLf
-    '    c_click_title.Text = ""
-    '    c_click_string.Text = ""
-    '    c_click_id.Text = ""
-    '    c_click_key.SelectedIndex = 3
-    '    c_click_times.Text = ""
-    'End Sub
-#End Region
-
-#Region "生成 Sleep 代码，已迁移至 sleep_cdlg"
-    'Private Sub btn_sleep_Click(sender As Object, e As RoutedEventArgs)
-    'Dim addcode As String = Nothing
-    'addcode = "sleep(" + sleep_times.Text + ")"
-    'rawcode.text = rawcode.text + addcode.Trim() + vbCrLf
-    'sleep_times.Text = ""
-    'End Sub
-#End Region
-
-    Private Sub w_wait_Click(sender As Object, e As RoutedEventArgs)
-        winwait_fly.ShowAt(w_wait)
-    End Sub
-
-#Region "生成 Winwait 系列代码"
-    Private Sub btn_winwait_Click(sender As Object, e As RoutedEventArgs)
-        Dim addcode As String = Nothing
-        Dim clickkey As String = Nothing
-        Select Case ww_set.SelectedIndex
-            Case 0
-                clickkey = "winwait"
-            Case 1
-                clickkey = "winwaitactive"
-            Case 2
-                clickkey = "winwaitclose"
-            Case 3
-                clickkey = "winwaitnotactive"
-        End Select
-        addcode = clickkey + "(""" + ww_title.Text + """,""" + ww_string.Text + """"
-        If ww_timeout.Text <> "" Then
-            addcode = addcode + "," + ww_timeout.Text
+    Private Async Sub w_wait_Click(sender As Object, e As RoutedEventArgs)
+        'winwait_fly.ShowAt(w_wait)
+        Dim winwait_dlg_r As ContentDialogResult
+        Dim winwait_dlg As New winwait_cdlg
+        winwait_dlg_r = Await winwait_dlg.ShowAsync()
+        If winwait_dlg_r = ContentDialogResult.Primary Then
+            rawcode.Text = rawcode.Text + winwait_dlg.addcode.Trim() + vbCrLf
         End If
-        addcode = addcode + ")"
-        rawcode.Text = rawcode.Text + addcode.Trim() + vbCrLf
-        ww_set.SelectedIndex = 0
-        ww_title.Text = ""
-        ww_string.Text = ""
-        ww_timeout.Text = ""
     End Sub
-#End Region
 
-    Private Sub run_exec_Click(sender As Object, e As RoutedEventArgs)
-        run_fly.ShowAt(run_exec)
+    Private Async Sub run_exec_Click(sender As Object, e As RoutedEventArgs)
+        'run_fly.ShowAt(run_exec)
+        Dim run_dlg_r As ContentDialogResult
+        Dim run_dlg As New run_cdlg
+        run_dlg_r = Await run_dlg.ShowAsync()
+        If run_dlg_r = ContentDialogResult.Primary Then
+            rawcode.Text = rawcode.Text + run_dlg.addcode.Trim() + vbCrLf
+        End If
     End Sub
 
     Private Async Sub btn_about_Click(sender As Object, e As RoutedEventArgs)
@@ -414,21 +278,9 @@ Public NotInheritable Class MainPage
         Await Windows.System.Launcher.LaunchUriAsync(New Uri("https://github.com/suwakowww/au3helper"))
     End Sub
 
-    Private Sub btn_run_exec_Click(sender As Object, e As RoutedEventArgs)
-        Dim addcode As String = Nothing
-        addcode = "run(""" + run_prog.Text + """)"
-        rawcode.Text = rawcode.Text + addcode.Trim() + vbCrLf
-        run_prog.Text = ""
-    End Sub
-
     Private Sub Mainpage_Loaded(sender As Object, e As RoutedEventArgs)
         If Windows.System.Profile.AnalyticsInfo.VersionInfo.DeviceFamily = "Windows.Mobile" Then
-            winevt.Visibility = Visibility.Collapsed
-            'mousekey.Visibility = Visibility.Collapsed
-            'clickbtn.Visibility = Visibility.Collapsed
-            'cclickbtn.Visibility = Visibility.Collapsed
-            'timerbtn.Visibility = Visibility.Collapsed
-            runbtn.Visibility = Visibility.Collapsed
+
         End If
         If Window.Current.Bounds.Width < Window.Current.Bounds.Height Then
             '先想想

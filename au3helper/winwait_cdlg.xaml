@@ -1,0 +1,35 @@
+﻿<ContentDialog
+    x:Class="au3helper.winwait_cdlg"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:au3helper"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Title="等待窗口"
+    PrimaryButtonText="插入"
+    SecondaryButtonText="关闭"
+    PrimaryButtonClick="ContentDialog_PrimaryButtonClick"
+    SecondaryButtonClick="ContentDialog_SecondaryButtonClick" Loaded="ContentDialog_Loaded">
+
+    <Grid>
+        <ScrollViewer x:Name="scrollbar">
+            <StackPanel Margin="0,0,12,0">
+                <TextBlock>等待操作</TextBlock>
+                <ComboBox x:Name="ww_set" SelectedIndex="0" Margin="0,4">
+                    <ComboBoxItem>等待出现</ComboBoxItem>
+                    <ComboBoxItem>等待激活</ComboBoxItem>
+                    <ComboBoxItem>等待关闭</ComboBoxItem>
+                    <ComboBoxItem>等待非激活</ComboBoxItem>
+                </ComboBox>
+                <TextBlock>查找窗口标题</TextBlock>
+                <TextBox x:Name="ww_title" Margin="0,4"/>
+                <TextBlock>查找窗口内可见字符串</TextBlock>
+                <TextBox x:Name="ww_string" Margin="0,4"/>
+                <TextBlock>超时（毫秒）</TextBlock>
+                <TextBlock TextWrapping="Wrap" Foreground="{ThemeResource HyperlinkForegroundThemeBrush}">如果等待时间超过该值，则等待失败，继续执行。</TextBlock>
+                <TextBox x:Name="ww_timeout" Margin="0,4"/>
+            </StackPanel>
+        </ScrollViewer>
+    </Grid>
+</ContentDialog>
