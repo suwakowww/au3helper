@@ -289,7 +289,12 @@ Public NotInheritable Class MainPage
         If Window.Current.Bounds.Width < Window.Current.Bounds.Height Then
             '先想想
         End If
-        If Window.Current.Bounds.Width < 480 Then
+        checkwidth()
+
+    End Sub
+
+    Private Sub checkwidth()
+        If Window.Current.Bounds.Width <= 500 Then
             '由于这种水平分辨率太小，隐藏这些功能
             winevt.Visibility = Visibility.Collapsed
             mousekey.Visibility = Visibility.Collapsed
@@ -297,7 +302,21 @@ Public NotInheritable Class MainPage
             cclickbtn.Visibility = Visibility.Collapsed
             timerbtn.Visibility = Visibility.Collapsed
             runbtn.Visibility = Visibility.Collapsed
-            low_width.Visibility = Visibility.Visible
+            If Window.Current.Bounds.Width <= 320 Then
+                low_width.Visibility = Visibility.Visible
+            Else
+                m_menu.Visibility = Visibility.Visible
+            End If
+        Else
+            '由于这种水平分辨率太小，隐藏这些功能
+            winevt.Visibility = Visibility.Visible
+            mousekey.Visibility = Visibility.Visible
+            clickbtn.Visibility = Visibility.Visible
+            cclickbtn.Visibility = Visibility.Visible
+            timerbtn.Visibility = Visibility.Visible
+            runbtn.Visibility = Visibility.Visible
+            low_width.Visibility = Visibility.Collapsed
+            m_menu.Visibility = Visibility.Collapsed
         End If
     End Sub
 
@@ -382,6 +401,11 @@ Public NotInheritable Class MainPage
             rawcode.Text = ""
         End If
     End Sub
+
+    Private Sub Mainpage_SizeChanged(sender As Object, e As SizeChangedEventArgs)
+        checkwidth()
+    End Sub
+
 
 
     'Private Sub l_d_toggle_Click(sender As Object, e As RoutedEventArgs)

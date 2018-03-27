@@ -8,7 +8,7 @@
     x:Name="Mainpage"
     mc:Ignorable="d"
     Loaded="Mainpage_Loaded"
-    
+    SizeChanged="Mainpage_SizeChanged"
     >
     <Page.Resources>
 
@@ -35,7 +35,7 @@
             -->
             <AppBarButton Label="窗口操作" x:Name="winevt">
                 <AppBarButton.Flyout>
-                    <MenuFlyout>
+                    <MenuFlyout x:Name="winevt_menu">
                         <MenuFlyoutItem Text="等待窗口" x:Name="w_wait" Click="w_wait_Click"/>
                     </MenuFlyout>
                 </AppBarButton.Flyout>
@@ -87,11 +87,39 @@
             </AppBarButton>
             <AppBarButton Label="运行操作" x:Name="runbtn">
                 <AppBarButton.Icon>
-                    <FontIcon FontFamily="res/FontAwesome.otf#FontAwesome" Glyph="&#xf120;"></FontIcon>
+                    <FontIcon FontFamily="res/FontAwesome.otf#FontAwesome" Glyph="&#xf120;"/>
                 </AppBarButton.Icon>
                 <AppBarButton.Flyout>
                     <MenuFlyout>
                         <MenuFlyoutItem  x:Name="run_exec" Click="run_exec_Click">运行程序</MenuFlyoutItem>
+                    </MenuFlyout>
+                </AppBarButton.Flyout>
+            </AppBarButton>
+            <AppBarButton x:Name="m_menu" Label="插入代码" Visibility="Collapsed">
+                <AppBarButton.Icon>
+                    <FontIcon FontFamily="res/FontAwesome.otf#FontAwesome" Glyph="&#xf121;"/>
+                </AppBarButton.Icon>
+                <AppBarButton.Flyout>
+                    <MenuFlyout>
+                        <MenuFlyoutSubItem x:Name="winevt_2" Text="窗口操作">
+                            <MenuFlyoutItem x:Name="w_wait_2" Text="等待窗口" Click="w_wait_Click"/>
+                        </MenuFlyoutSubItem>
+                        <MenuFlyoutSubItem x:Name="mousekey_2" Text="鼠标操作">
+                            <MenuFlyoutItem x:Name="m_move_2" Text="鼠标移动" Click="m_move_Click"/>
+                            <MenuFlyoutItem x:Name="m_click_2" Text="鼠标点击" Click="m_click_Click"/>
+                        </MenuFlyoutSubItem>
+                        <MenuFlyoutSubItem x:Name="clickbtn_2" Text="控件操作">
+                            <MenuFlyoutItem x:Name="c_click_2" Text="控件点击" Click="c_click_Click"/>
+                        </MenuFlyoutSubItem>
+                        <MenuFlyoutSubItem x:Name="cclickbtn_2" Text="按键操作">
+                            <MenuFlyoutItem x:Name="send_key_2" Text="发送按键" Click="send_key_Click"/>
+                        </MenuFlyoutSubItem>
+                        <MenuFlyoutSubItem x:Name="timerbtn_2" Text="计时操作">
+                            <MenuFlyoutItem x:Name="sleep_2" Text="暂停" Click="sleep_Click"/>
+                        </MenuFlyoutSubItem>
+                        <MenuFlyoutSubItem x:Name="runbtn_2" Text="运行操作">
+                            <MenuFlyoutItem x:Name="run_exec_2" Text="运行程序" Click="run_exec_Click"/>
+                        </MenuFlyoutSubItem>
                     </MenuFlyout>
                 </AppBarButton.Flyout>
             </AppBarButton>
