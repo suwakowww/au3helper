@@ -21,7 +21,7 @@ Public NotInheritable Class MainPage
             perlinetext = codeconvert.Split(vbCrLf)
             converted.Text = ""
             For i = 0 To perlinetext.Count - 1
-                converted.Text = converted.Text + au3convert(perlinetext(i))
+                converted.Text = converted.Text + au3convert.au3convert(perlinetext(i))
             Next
         Else
             converted.Text = ""
@@ -29,166 +29,7 @@ Public NotInheritable Class MainPage
         converting.IsActive = False
     End Sub
 
-    Public Function au3convert(ByVal src As String)
-        Dim result As String = Nothing
-        Dim errorflag As Boolean = False
-        src = src.Trim()    '清理空白字符
-        If Regex.Matches(src, "run\(", RegexOptions.IgnoreCase).Count > 0 Then
-            '检测 Run 函数
-            result = Regex.Replace(src, "run\((\'|"")(.+?)(\'|"")\)", "运行 $2 程序", RegexOptions.IgnoreCase)
 
-#Region "WinWait 系列函数"
-        ElseIf Regex.Matches(src, "winwait(active|close|notactive)?\(", RegexOptions.IgnoreCase).Count > 0 Then
-            '检测 WinWait 系列函数
-            Select Case Regex.Matches(src, """,").Count
-                Case 2
-                    If Regex.Matches(src, "(winwaitactive|winwaitclose|winwaitnotactive|winwait)\(""(.+?)"",""(.+?)"",([0-9]+)\)", RegexOptions.IgnoreCase).Count > 0 Then
-                        result = Regex.Replace(src, "(winwaitactive|winwaitclose|winwaitnotactive|winwait)\(""(.+?)"",""(.+?)"",([0-9]+)\)", "等待带有 $3 字符串的 $2 窗口 $1，如无则 $4 秒后继续往下执行", RegexOptions.IgnoreCase)
-                    Else
-                        errorflag = True
-                        result = "语法错误：" + src
-                    End If
-                Case 1
-                    If Regex.Matches(src, "(winwaitactive|winwaitclose|winwaitnotactive|winwait)\(""(.+?)"",""(.+?)""\)", RegexOptions.IgnoreCase).Count > 0 Then
-                        result = Regex.Replace(src, "(winwaitactive|winwaitclose|winwaitnotactive|winwait)\(""(.+?)"",""(.+?)""\)", "等待带有 $3 字符串的 $2 窗口 $1", RegexOptions.IgnoreCase)
-                    Else
-                        errorflag = True
-                        result = "语法错误：" + src
-                    End If
-                Case Else
-                    If Regex.Matches(src, "(winwaitactive|winwaitclose|winwaitnotactive|winwait)\(""(.+?)""\)", RegexOptions.IgnoreCase).Count > 0 Then
-                        result = Regex.Replace(src, "(winwaitactive|winwaitclose|winwaitnotactive|winwait)\(""(.+?)""\)", "等待 $1 窗口出现", RegexOptions.IgnoreCase)
-                    Else
-                        errorflag = True
-                        result = "语法错误：" + src
-                    End If
-            End Select
-            If errorflag = False Then
-                result = result.Replace("winwaitnotactive", "非激活")
-                result = result.Replace("winwaitclose", "关闭")
-                result = result.Replace("winwaitactive", "激活")
-                result = result.Replace("winwait", "出现")
-            End If
-#End Region
-
-#Region "Send 函数"
-        ElseIf Regex.Matches(src, "send\(", RegexOptions.IgnoreCase).Count > 0 Then
-            If Regex.Matches(src, "\!|\+|\^|\#").Count > 0 AndAlso Regex.Matches(src, "send\(""(.+?)""(,0)?\)", RegexOptions.IgnoreCase).Count > 0 Then
-                result = Regex.Replace(src, "send\(""(.+?)""(,0)?\)", "发送 $1 组合键", RegexOptions.IgnoreCase)
-                result = result.Replace("+", "Shift+")  '因为后面的加号会影响
-                result = result.Replace("!", "Alt+")
-                result = result.Replace("^", "Ctrl+")
-                result = result.Replace("#", "Win+")
-            ElseIf Regex.Matches(src, "send\(""(.+?)""(,1)?\)", RegexOptions.IgnoreCase).Count > 0 Then
-                result = Regex.Replace(src, "send\(""(.+?)""(,1)?\)", "发送按键 $1", RegexOptions.IgnoreCase)
-            Else
-                result = "语法错误：" + src
-            End If
-#End Region
-
-        ElseIf Regex.Matches(src, "sleep\(", RegexOptions.IgnoreCase).Count > 0 Then
-            '检测 Sleep 函数
-            result = Regex.Replace(src, "sleep\(([0-9]+)\)", "等待 $1 毫秒后继续往下执行", RegexOptions.IgnoreCase)
-
-        ElseIf src = "" Then
-            '防止下面的检测首字符导致崩溃
-            result = src
-
-        ElseIf src.Substring(0, 1) = ";" Then
-            '检测注释
-            result = Regex.Replace(src, ";(.+)", "<注释：$1>")
-
-#Region "ControlClick 函数"
-        ElseIf Regex.Matches(src, "controlclick\("， RegexOptions.IgnoreCase).Count > 0 Then
-            Select Case Regex.Matches(src, ",").Count
-                Case 2
-                    If Regex.Matches(src, "controlclick\(""(.+?)"",""(.+?)"",([0-9]+)\)", RegexOptions.IgnoreCase).Count > 0 Then
-                        result = Regex.Replace(src, "controlclick\(""(.+?)"",""(.+?)"",([0-9]+)\)", "在带有 $2 字符串的 $1 窗口内点击控件 ID 为 $3 的按钮", RegexOptions.IgnoreCase)
-                    Else
-                        result = "语法错误：" + src
-                    End If
-                Case 3
-                    If Regex.Matches(src, "controlclick\(""(.+?)"",""(.+?)"",([0-9]+),""(.+?)""\)", RegexOptions.IgnoreCase).Count > 0 Then
-                        result = Regex.Replace(src, "controlclick\(""(.+?)"",""(.+?)"",([0-9]+),""(.+?)""\)", "在带有 $2 字符串的 $1 窗口内用鼠标 $4 键点击控件 ID 为 $3 的按钮", RegexOptions.IgnoreCase)
-                    Else
-                        result = "语法错误：" + src
-                    End If
-                Case 4
-                    If Regex.Matches(src, "controlclick\(""(.+?)"",""(.+?)"",([0-9]+),""(.+?)"",([0-9]+)\)", RegexOptions.IgnoreCase).Count > 0 Then
-                        result = Regex.Replace(src, "controlclick\(""(.+?)"",""(.+?)"",([0-9]+),""(.+?)"",([0-9]+)\)", "在带有 $2 字符串的 $1 窗口内用鼠标 $4 键点击 $5 次控件 ID 为 $3 的按钮", RegexOptions.IgnoreCase)
-                    Else
-                        result = "语法错误" + src
-                    End If
-                Case Else
-                    result = "参数错误：" + src
-            End Select
-            'result = Regex.Replace(src, "controlclick\(""(.+?)"",""(.+?)"",([0-9]+)\)", "在带有 $2 字符串的 $1 窗口内点击控件 ID 为 $3 的按钮", RegexOptions.IgnoreCase)
-#End Region
-
-#Region "MouseMove 函数"
-        ElseIf Regex.Matches(src, "mousemove\(", RegexOptions.IgnoreCase).Count > 0 Then
-            '检测 MouseMove 函数
-            If Regex.Matches(src, ",").Count > 0 Then
-                If Regex.Matches(src, "mousemove\(([0-9]+),([0-9])+,([0-9]+)+\)", RegexOptions.IgnoreCase).Count > 0 Then
-                    result = Regex.Replace(src, "mousemove\(([0-9]+),([0-9]+)+,([0-9]+)+\)", "将鼠标以 $3 的速度移动到 ($1,$2) 的位置（速度值越大越慢）", RegexOptions.IgnoreCase)
-                Else
-                    result = "语法错误：" + src
-                End If
-            Else
-                If Regex.Matches(src, "mousemove\(([0-9]+),([0-9]+)\)", RegexOptions.IgnoreCase).Count > 0 Then
-                    result = Regex.Replace(src, "mousemove\(([0-9]+),([0-9]+)\)", "将鼠标移动到 ($1,$2) 的位置", RegexOptions.IgnoreCase)
-                Else
-                    result = "语法错误：" + src
-                End If
-            End If
-#End Region
-
-#Region "MouseClick 函数"
-        ElseIf Regex.Matches(src, "mouseclick\(", RegexOptions.IgnoreCase).Count > 0 Then
-            If Regex.Matches(src, ",").Count > 0 Then
-                Select Case Regex.Matches(src, ",").Count
-                    Case 2
-                        If Regex.Matches(src, "mouseclick\(""(left|right|middle|main|menu|primary|secondary)"",([0-9]+),([0-9]+)\)", RegexOptions.IgnoreCase).Count > 0 Then
-                            result = Regex.Replace(src, "mouseclick\(""(left|right|middle|main|menu|primary|secondary)"",([0-9]+),([0-9]+)\)", "在 ($2,$3) 上点击鼠标 $1 键", RegexOptions.IgnoreCase)
-                        Else
-                            errorflag = True
-                            result = "语法错误：" + src
-                        End If
-                    Case 3
-                        If Regex.Matches(src, "mouseclick\(""(left|right|middle|main|menu|primary|secondry)"",([0-9]+),([0-9]+),([0-9]+)\)", RegexOptions.IgnoreCase).Count > 0 Then
-                            result = Regex.Replace(src, "mouseclick\(""(left|right|middle|main|menu|primary|secondry)"",([0-9]+),([0-9]+),([0-9]+)\)", "在 ($2,$3) 上点击 $4 次鼠标 $1 键", RegexOptions.IgnoreCase)
-                        Else
-                            errorflag = True
-                            result = "语法错误：" + src
-                        End If
-                    Case 4
-                        If Regex.Matches(src, "mouseclick\(""(left|right|middle|main|menu|primary|secondry)"",([0-9]+),([0-9]+),([0-9]+),([0-9]+)\)", RegexOptions.IgnoreCase).Count > 0 Then
-                            result = Regex.Replace(src, "mouseclick\(""(left|right|middle|main|menu|primary|secondry)"",([0-9]+),([0-9]+),([0-9]+),([0-9]+)\)", "以 $5 的速度移动到 ($2,$3) 并点击 $4 次鼠标 $1 键（速度值越大越慢）", RegexOptions.IgnoreCase)
-                        Else
-                            errorflag = True
-                            result = "语法错误：" + src
-                        End If
-                    Case Else
-                        errorflag = True
-                        result = "语法错误：" + src
-                End Select
-            Else
-                If Regex.Matches(src, "mouseclick\(""(left|right|middle|main|menu|primary|secondry)""\)", RegexOptions.IgnoreCase).Count > 0 Then
-                    result = Regex.Replace(src, "mouseclick\(""(left|right|middle|main|menu|primary|secondry)""\)", "点击鼠标 $1 键")
-                Else
-                    errorflag = True
-                    result = "语法错误：" + src
-                End If
-            End If
-#End Region
-
-        Else
-            '语法错误，或者不支持，则原样输出
-            result = src
-        End If
-        result = result + vbLf
-        Return result
-    End Function
 
     Private Async Sub m_move_Click(sender As Object, e As RoutedEventArgs)
         'mousemove_fly.ShowAt(m_move)
@@ -222,7 +63,7 @@ Public NotInheritable Class MainPage
 
     Private Async Sub c_click_Click(sender As Object, e As RoutedEventArgs)
         'controlclick_fly.ShowAt(c_click)
-        Dim controlclick_dlg As New controlclick_dlg
+        Dim controlclick_dlg As New controlclick_cdlg
         Dim controlclick_dlg_r As ContentDialogResult
         controlclick_dlg_r = Await controlclick_dlg.ShowAsync()
         If controlclick_dlg_r = ContentDialogResult.Primary Then
@@ -293,6 +134,7 @@ Public NotInheritable Class MainPage
 
     End Sub
 
+#Region "检测屏幕宽度"
     Private Sub checkwidth()
         If Window.Current.Bounds.Width <= 500 Then
             '由于这种水平分辨率太小，隐藏这些功能
@@ -319,6 +161,7 @@ Public NotInheritable Class MainPage
             m_menu.Visibility = Visibility.Collapsed
         End If
     End Sub
+#End Region
 
     Private Async Sub low_width_Click(sender As Object, e As RoutedEventArgs)
         Dim low_width_dlg As New ContentDialog With
@@ -404,6 +247,10 @@ Public NotInheritable Class MainPage
 
     Private Sub Mainpage_SizeChanged(sender As Object, e As SizeChangedEventArgs)
         checkwidth()
+    End Sub
+
+    Private Sub w_action_Click(sender As Object, e As RoutedEventArgs)
+
     End Sub
 
 

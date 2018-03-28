@@ -37,6 +37,7 @@
                 <AppBarButton.Flyout>
                     <MenuFlyout x:Name="winevt_menu">
                         <MenuFlyoutItem Text="等待窗口" x:Name="w_wait" Click="w_wait_Click"/>
+                        <MenuFlyoutItem Text="操作窗口" x:Name="w_action" Click="w_action_Click"/>
                     </MenuFlyout>
                 </AppBarButton.Flyout>
                 <AppBarButton.Icon>

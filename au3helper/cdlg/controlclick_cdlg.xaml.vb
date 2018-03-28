@@ -1,6 +1,6 @@
 ﻿' コンテンツ ダイアログの項目テンプレートについては、https://go.microsoft.com/fwlink/?LinkId=234238 を参照してください
 
-Public NotInheritable Class controlclick_dlg
+Public NotInheritable Class controlclick_cdlg
     Inherits ContentDialog
 
     Public addcode As String
@@ -55,11 +55,11 @@ Public NotInheritable Class controlclick_dlg
     Private Sub ContentDialog_Loaded(sender As Object, e As RoutedEventArgs)
         If Window.Current.Bounds.Height <= 600 Then
             '修复 ContentDialog 显示隐藏项目后导致无法显示所有项目的问题
-            scrollbar.VerticalScrollBarVisibility = ScrollBarVisibility.Visible
-            scrollbar.Height = Window.Current.Bounds.Height - 128
+            ScrollBar.VerticalScrollBarVisibility = ScrollBarVisibility.Visible
+            ScrollBar.Height = Window.Current.Bounds.Height - 128
         Else
             '要是屏幕高度足够，则无需进行修复，并隐藏不必要的滚动条
-            scrollbar.VerticalScrollBarVisibility = ScrollBarVisibility.Hidden
+            ScrollBar.VerticalScrollBarVisibility = ScrollBarVisibility.Hidden
         End If
     End Sub
 End Class

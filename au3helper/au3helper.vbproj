@@ -107,29 +107,30 @@
     <Compile Include="App.xaml.vb">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
-    <Compile Include="controlclick_dlg.xaml.vb">
-      <DependentUpon>controlclick_dlg.xaml</DependentUpon>
+    <Compile Include="lib\au3convert.vb" />
+    <Compile Include="cdlg\controlclick_cdlg.xaml.vb">
+      <DependentUpon>controlclick_cdlg.xaml</DependentUpon>
     </Compile>
     <Compile Include="MainPage.xaml.vb">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="mouseclick_cdlg.xaml.vb">
+    <Compile Include="cdlg\mouseclick_cdlg.xaml.vb">
       <DependentUpon>mouseclick_cdlg.xaml</DependentUpon>
     </Compile>
-    <Compile Include="mousemove_cdlg.xaml.vb">
+    <Compile Include="cdlg\mousemove_cdlg.xaml.vb">
       <DependentUpon>mousemove_cdlg.xaml</DependentUpon>
     </Compile>
     <Compile Include="My Project\AssemblyInfo.vb" />
-    <Compile Include="run_cdlg.xaml.vb">
+    <Compile Include="cdlg\run_cdlg.xaml.vb">
       <DependentUpon>run_cdlg.xaml</DependentUpon>
     </Compile>
-    <Compile Include="sendkey_cdlg.xaml.vb">
+    <Compile Include="cdlg\sendkey_cdlg.xaml.vb">
       <DependentUpon>sendkey_cdlg.xaml</DependentUpon>
     </Compile>
-    <Compile Include="sleep_cdlg.xaml.vb">
+    <Compile Include="cdlg\sleep_cdlg.xaml.vb">
       <DependentUpon>sleep_cdlg.xaml</DependentUpon>
     </Compile>
-    <Compile Include="winwait_cdlg.xaml.vb">
+    <Compile Include="cdlg\winwait_cdlg.xaml.vb">
       <DependentUpon>winwait_cdlg.xaml</DependentUpon>
     </Compile>
   </ItemGroup>
@@ -203,7 +204,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Page Include="controlclick_dlg.xaml">
+    <Page Include="cdlg\controlclick_cdlg.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -211,27 +212,27 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="mouseclick_cdlg.xaml">
+    <Page Include="cdlg\mouseclick_cdlg.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="mousemove_cdlg.xaml">
+    <Page Include="cdlg\mousemove_cdlg.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="run_cdlg.xaml">
+    <Page Include="cdlg\run_cdlg.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="sendkey_cdlg.xaml">
+    <Page Include="cdlg\sendkey_cdlg.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="sleep_cdlg.xaml">
+    <Page Include="cdlg\sleep_cdlg.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="winwait_cdlg.xaml">
+    <Page Include="cdlg\winwait_cdlg.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -271,6 +272,7 @@
       <Version>6.0.6</Version>
     </PackageReference>
   </ItemGroup>
+  <ItemGroup />
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>
   </PropertyGroup>
