@@ -58,10 +58,13 @@ Public Class au3convert
             End If
 #End Region
 
+#Region "Sleep 函数"
         ElseIf Regex.Matches(src, "sleep\(", RegexOptions.IgnoreCase).Count > 0 Then
             '检测 Sleep 函数
             result = Regex.Replace(src, "sleep\(([0-9]+)\)", "等待 $1 毫秒后继续往下执行", RegexOptions.IgnoreCase)
+#End Region
 
+#Region "单行注释"
         ElseIf src = "" Then
             '防止下面的检测首字符导致崩溃
             result = src
@@ -69,6 +72,7 @@ Public Class au3convert
         ElseIf src.Substring(0, 1) = ";" Then
             '检测注释
             result = Regex.Replace(src, ";(.+)", "<注释：$1>")
+#End Region
 
 #Region "ControlClick 函数"
         ElseIf Regex.Matches(src, "controlclick\("， RegexOptions.IgnoreCase).Count > 0 Then
@@ -95,6 +99,22 @@ Public Class au3convert
                     result = "参数错误：" + src
             End Select
             'result = Regex.Replace(src, "controlclick\(""(.+?)"",""(.+?)"",([0-9]+)\)", "在带有 $2 字符串的 $1 窗口内点击控件 ID 为 $3 的按钮", RegexOptions.IgnoreCase)
+#End Region
+
+#Region "Control 控件操作函数（三参数）"
+        ElseIf Regex.Matches(src, "control(disable|enable|hide|show)\(").Count > 0 Then
+            If Regex.Matches(src, "control(disable|enable|hide|show)\(""(.+?)"",""(.+?)"",([0-9]+)\)", RegexOptions.IgnoreCase).Count > 0 Then
+                result = Regex.Replace(src, "control(disable|enable|hide|show)\(""(.+?)"",""(.+?)"",([0-9]+)\)", "$1 带有 $3 字符串的 $2 窗口内的 $4 控件", RegexOptions.IgnoreCase)
+            Else
+                errorflag = True
+                result = "语法错误：" + src
+            End If
+            If errorflag = False Then
+                result = result.Replace("disable", "禁用")
+                result = result.Replace("enable", "启用")
+                result = result.Replace("hide", "隐藏")
+                result = result.Replace("show", "显示")
+            End If
 #End Region
 
 #Region "MouseMove 函数"
@@ -151,6 +171,34 @@ Public Class au3convert
                     errorflag = True
                     result = "语法错误：" + src
                 End If
+            End If
+#End Region
+
+#Region "Win 操作函数"
+        ElseIf Regex.Matches(src, "win(activate|close|kill)\(", RegexOptions.IgnoreCase).Count > 0 Then
+            Select Case Regex.Matches(src, """,").Count
+                Case 0
+                    If Regex.Matches(src, "win(activate|close|kill)\(""(.+?)""\)", RegexOptions.IgnoreCase).Count > 0 Then
+                        result = Regex.Replace(src, "win(activate|close|kill)\(""(.+?)""\)", "$1 $2 窗口")
+                    Else
+                        errorflag = True
+                        result = "语法错误：" + src
+                    End If
+                Case 1
+                    If Regex.Matches(src, "win(activate|close|kill)\(""(.+?)"",""(.+?)""\)", RegexOptions.IgnoreCase).Count > 0 Then
+                        result = Regex.Replace(src, "win(activate|close|kill)\(""(.+?)"",""(.+?)""\)", "$1 带有 $3 字符串的 $2 窗口", RegexOptions.IgnoreCase)
+                    Else
+                        errorflag = True
+                        result = "语法错误：" + src
+                    End If
+                Case Else
+                    errorflag = True
+                    result = "语法错误：" + src
+            End Select
+            If errorflag = False Then
+                result = result.Replace("activate", "激活")
+                result = result.Replace("close", "关闭")
+                result = result.Replace("kill", "强制关闭")
             End If
 #End Region
 

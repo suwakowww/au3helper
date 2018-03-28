@@ -163,6 +163,7 @@ Public NotInheritable Class MainPage
     End Sub
 #End Region
 
+#Region "低分辨率提示"
     Private Async Sub low_width_Click(sender As Object, e As RoutedEventArgs)
         Dim low_width_dlg As New ContentDialog With
             {
@@ -174,6 +175,7 @@ Public NotInheritable Class MainPage
         AddHandler low_width_dlg.PrimaryButtonClick, AddressOf to_display_settings
         Await low_width_dlg.ShowAsync()
     End Sub
+#End Region
 
     Private Async Sub to_display_settings(sender As ContentDialog, args As ContentDialogButtonClickEventArgs)
         Await Windows.System.Launcher.LaunchUriAsync(New Uri("ms-settings:display"))
