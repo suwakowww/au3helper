@@ -14,22 +14,44 @@ Public NotInheritable Class MainPage
 
     Private Sub rawcode_LostFocus(sender As Object, e As RoutedEventArgs)
         converting.IsActive = True
+        src2dst()
+        converting.IsActive = False
+    End Sub
+
+    Private Sub src2dst()
         Dim codeconvert As String
         Dim perlinetext As String()
+        Dim result As String = Nothing
         codeconvert = rawcode.Text
         If codeconvert <> "" Then
             perlinetext = codeconvert.Split(vbCrLf)
             converted.Text = ""
             For i = 0 To perlinetext.Count - 1
-                converted.Text = converted.Text + au3convert.au3convert(perlinetext(i))
+                result = result + au3convert.au3convert(perlinetext(i))
             Next
+            converted.Text = result
+            m_converted.Text = result
         Else
             converted.Text = ""
         End If
-        converting.IsActive = False
     End Sub
 
-
+    Private Sub src2dst_m()
+        Dim codeconvert As String
+        Dim perlinetext As String()
+        Dim result As String = Nothing
+        codeconvert = m_rawcode.Text
+        If codeconvert <> "" Then
+            perlinetext = codeconvert.Split(vbCrLf)
+            converted.Text = ""
+            For i = 0 To perlinetext.Count - 1
+                result = result + au3convert.au3convert(perlinetext(i))
+            Next
+            m_converted.Text = result
+        Else
+            m_converted.Text = ""
+        End If
+    End Sub
 
     Private Async Sub m_move_Click(sender As Object, e As RoutedEventArgs)
         'mousemove_fly.ShowAt(m_move)
@@ -127,9 +149,6 @@ Public NotInheritable Class MainPage
         If Windows.System.Profile.AnalyticsInfo.VersionInfo.DeviceFamily = "Windows.Mobile" Then
 
         End If
-        If Window.Current.Bounds.Width < Window.Current.Bounds.Height Then
-            '先想想
-        End If
         checkwidth()
 
     End Sub
@@ -159,6 +178,15 @@ Public NotInheritable Class MainPage
             runbtn.Visibility = Visibility.Visible
             low_width.Visibility = Visibility.Collapsed
             m_menu.Visibility = Visibility.Collapsed
+        End If
+        If Window.Current.Bounds.Width < 768 Then
+            desktop_src.Visibility = Visibility.Collapsed
+            desktop_ana.Visibility = Visibility.Collapsed
+            mobile_src_ana.Visibility = Visibility.Visible
+        Else
+            desktop_src.Visibility = Visibility.Visible
+            desktop_ana.Visibility = Visibility.Visible
+            mobile_src_ana.Visibility = Visibility.Collapsed
         End If
     End Sub
 #End Region
@@ -253,6 +281,10 @@ Public NotInheritable Class MainPage
 
     Private Sub w_action_Click(sender As Object, e As RoutedEventArgs)
 
+    End Sub
+
+    Private Sub mobile_src_ana_p_SelectionChanged(sender As Object, e As SelectionChangedEventArgs)
+        src2dst_m()
     End Sub
 
 

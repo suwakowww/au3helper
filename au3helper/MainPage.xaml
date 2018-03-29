@@ -160,22 +160,36 @@
                         <ColumnDefinition />
                         <ColumnDefinition />
                     </Grid.ColumnDefinitions>
-                    <Grid Grid.Column="0">
-                        <ScrollViewer>
-                            <StackPanel Padding="12,0">
-                                <TextBlock HorizontalAlignment="Left">源代码</TextBlock>
-                                <TextBox x:Name="rawcode" PlaceholderText="在这里输入代码..." AcceptsReturn="True" TextWrapping="Wrap" LostFocus="rawcode_LostFocus"/>
-                            </StackPanel>
-                        </ScrollViewer>
+                    <Grid Grid.Column="0" x:Name="desktop_src" Visibility="Collapsed">
+                        <TextBlock Margin="12,0" HorizontalAlignment="Left" VerticalAlignment="Top">源代码</TextBlock>
+                        <TextBox Margin="12,24,12,12" x:Name="rawcode" PlaceholderText="在这里输入代码..." AcceptsReturn="True" TextWrapping="Wrap" LostFocus="rawcode_LostFocus" ScrollViewer.VerticalScrollBarVisibility="Auto"/>
                     </Grid>
-                    <Grid Grid.Column="1">
-                        <ScrollViewer>
-                            <StackPanel Padding="12,0">
-                                <TextBlock>事件过程</TextBlock>
+                    <Grid Grid.Column="1" x:Name="desktop_ana" Visibility="Collapsed">
+                        <TextBlock Margin="12,0">事件过程</TextBlock>
+                        <ScrollViewer Margin="12,24,12,12" Padding="8,4" BorderThickness="2" BorderBrush="{ThemeResource TextBoxBorderThemeBrush}">
+                            <StackPanel>
                                 <TextBlock x:Name="converted" TextWrapping="Wrap"></TextBlock>
                             </StackPanel>
                         </ScrollViewer>
                         <ProgressRing x:Name="converting" IsActive="False" Width="100" Height="100" />
+                    </Grid>
+                    <Grid Grid.ColumnSpan="2" x:Name="mobile_src_ana">
+                        <Pivot x:Name="mobile_src_ana_p" SelectionChanged="mobile_src_ana_p_SelectionChanged">
+                            <PivotItem Header="源代码" x:Name="m_src">
+                                <Grid Margin="0,0,0,12">
+                                    <TextBox PlaceholderText="在这里输入代码..." x:Name="m_rawcode" Text="{Binding Mode=TwoWay,ElementName=rawcode,Path=Text}" AcceptsReturn="True" LostFocus="src2dst_m" ScrollViewer.VerticalScrollBarVisibility="Auto" TextWrapping="Wrap"/>
+                                </Grid>
+                            </PivotItem>
+                            <PivotItem Header="事件过程" x:Name="m_ana">
+                                <Grid Margin="0,0,0,12">
+                                    <ScrollViewer BorderThickness="2" BorderBrush="{ThemeResource TextBoxBorderThemeBrush}">
+                                        <StackPanel>
+                                            <TextBlock Padding="8,4" x:Name="m_converted" Text="{Binding Mode=TwoWay,ElementName=converted,Path=Text}" TextWrapping="Wrap" />
+                                        </StackPanel>
+                                    </ScrollViewer>
+                                </Grid>
+                            </PivotItem>
+                        </Pivot>
                     </Grid>
                 </Grid>
             </SplitView.Content>
