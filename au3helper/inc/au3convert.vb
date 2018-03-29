@@ -5,31 +5,73 @@ Public Class au3convert
         Dim result As String = Nothing
         Dim errorflag As Boolean = False
         src = src.Trim()    '清理空白字符
+
+#Region "Run 函数"
         If Regex.Matches(src, "run\(", RegexOptions.IgnoreCase).Count > 0 Then
             '检测 Run 函数
             result = Regex.Replace(src, "run\((\'|"")(.+?)(\'|"")\)", "运行 $2 程序", RegexOptions.IgnoreCase)
+#End Region
+
+#Region "ProcessWait 函数"
+        ElseIf Regex.Matches(src, "process(wait|waitclose)\(", RegexOptions.IgnoreCase).Count > 0 Then
+            '分离正则表达式
+            Dim pw_regestr As String() = New String() _
+                {
+                "process(wait|waitclose)\(""(.+?)"",([0-9]+)\)",
+                "process(wait|waitclose)\(""(.+?)""\)"
+                }
+            '这里第一条为二参数版（带等待时间，单位为秒），第二条为一参数版（不带等待时间）
+
+            If src.Contains(""",") = True Then
+                If Regex.Matches(src, pw_regestr(0), RegexOptions.IgnoreCase).Count > 0 Then
+                    result = Regex.Replace(src, pw_regestr(0), "等待 $2 进程 $1，如无则 $3 秒后继续往下执行")
+                Else
+                    errorflag = True
+                    result = "语法错误：" + src
+                End If
+            Else
+                If Regex.Matches(src, pw_regestr(1), RegexOptions.IgnoreCase).Count > 0 Then
+                    result = Regex.Replace(src, pw_regestr(1), "等待 $2 进程 $1", RegexOptions.IgnoreCase)
+                Else
+                    errorflag = True
+                    result = "语法错误：" + src
+                End If
+            End If
+            If errorflag = False Then
+                result = result.Replace("waitclose", "结束")
+                result = result.Replace("wait", "出现")
+            End If
+#End Region
 
 #Region "WinWait 系列函数"
         ElseIf Regex.Matches(src, "winwait(active|close|notactive)?\(", RegexOptions.IgnoreCase).Count > 0 Then
+            '分离正则表达式
+            Dim ww_regestr As String() = New String() _
+                {
+                "(winwaitactive|winwaitclose|winwaitnotactive|winwait)\(""(.+?)"",""(.+?)"",([0-9]+)\)",
+                "(winwaitactive|winwaitclose|winwaitnotactive|winwait)\(""(.+?)"",""(.+?)""\)",
+                "(winwaitactive|winwaitclose|winwaitnotactive|winwait)\(""(.+?)""\)"
+                }
+
             '检测 WinWait 系列函数
             Select Case Regex.Matches(src, """,").Count
                 Case 2
-                    If Regex.Matches(src, "(winwaitactive|winwaitclose|winwaitnotactive|winwait)\(""(.+?)"",""(.+?)"",([0-9]+)\)", RegexOptions.IgnoreCase).Count > 0 Then
-                        result = Regex.Replace(src, "(winwaitactive|winwaitclose|winwaitnotactive|winwait)\(""(.+?)"",""(.+?)"",([0-9]+)\)", "等待带有 $3 字符串的 $2 窗口 $1，如无则 $4 秒后继续往下执行", RegexOptions.IgnoreCase)
+                    If Regex.Matches(src, ww_regestr(0), RegexOptions.IgnoreCase).Count > 0 Then
+                        result = Regex.Replace(src, ww_regestr(0), "等待带有 $3 字符串的 $2 窗口 $1，如无则 $4 秒后继续往下执行", RegexOptions.IgnoreCase)
                     Else
                         errorflag = True
                         result = "语法错误：" + src
                     End If
                 Case 1
-                    If Regex.Matches(src, "(winwaitactive|winwaitclose|winwaitnotactive|winwait)\(""(.+?)"",""(.+?)""\)", RegexOptions.IgnoreCase).Count > 0 Then
-                        result = Regex.Replace(src, "(winwaitactive|winwaitclose|winwaitnotactive|winwait)\(""(.+?)"",""(.+?)""\)", "等待带有 $3 字符串的 $2 窗口 $1", RegexOptions.IgnoreCase)
+                    If Regex.Matches(src, ww_regestr(1), RegexOptions.IgnoreCase).Count > 0 Then
+                        result = Regex.Replace(src, ww_regestr(1), "等待带有 $3 字符串的 $2 窗口 $1", RegexOptions.IgnoreCase)
                     Else
                         errorflag = True
                         result = "语法错误：" + src
                     End If
                 Case Else
-                    If Regex.Matches(src, "(winwaitactive|winwaitclose|winwaitnotactive|winwait)\(""(.+?)""\)", RegexOptions.IgnoreCase).Count > 0 Then
-                        result = Regex.Replace(src, "(winwaitactive|winwaitclose|winwaitnotactive|winwait)\(""(.+?)""\)", "等待 $1 窗口出现", RegexOptions.IgnoreCase)
+                    If Regex.Matches(src, ww_regestr(2), RegexOptions.IgnoreCase).Count > 0 Then
+                        result = Regex.Replace(src, ww_regestr(2), "等待 $2 窗口 $1", RegexOptions.IgnoreCase)
                     Else
                         errorflag = True
                         result = "语法错误：" + src
@@ -102,9 +144,9 @@ Public Class au3convert
 #End Region
 
 #Region "Control 控件操作函数（三参数）"
-        ElseIf Regex.Matches(src, "control(disable|enable|hide|show)\(").Count > 0 Then
-            If Regex.Matches(src, "control(disable|enable|hide|show)\(""(.+?)"",""(.+?)"",([0-9]+)\)", RegexOptions.IgnoreCase).Count > 0 Then
-                result = Regex.Replace(src, "control(disable|enable|hide|show)\(""(.+?)"",""(.+?)"",([0-9]+)\)", "$1 带有 $3 字符串的 $2 窗口内的 $4 控件", RegexOptions.IgnoreCase)
+        ElseIf Regex.Matches(src, "control(disable|enable|hide|show|focus)\(").Count > 0 Then
+            If Regex.Matches(src, "control(disable|enable|hide|show|focus)\(""(.+?)"",""(.+?)"",([0-9]+)\)", RegexOptions.IgnoreCase).Count > 0 Then
+                result = Regex.Replace(src, "control(disable|enable|hide|show|focus)\(""(.+?)"",""(.+?)"",([0-9]+)\)", "$1 带有 $3 字符串的 $2 窗口内的 $4 控件", RegexOptions.IgnoreCase)
             Else
                 errorflag = True
                 result = "语法错误：" + src
@@ -114,6 +156,7 @@ Public Class au3convert
                 result = result.Replace("enable", "启用")
                 result = result.Replace("hide", "隐藏")
                 result = result.Replace("show", "显示")
+                result = result.Replace("focus", "定位到")
             End If
 #End Region
 
@@ -174,7 +217,7 @@ Public Class au3convert
             End If
 #End Region
 
-#Region "Win 操作函数"
+#Region "Win 操作函数（二参数）"
         ElseIf Regex.Matches(src, "win(activate|close|kill)\(", RegexOptions.IgnoreCase).Count > 0 Then
             Select Case Regex.Matches(src, """,").Count
                 Case 0
@@ -208,5 +251,15 @@ Public Class au3convert
         End If
         result = result + vbLf
         Return result
+    End Function
+
+    ''' <summary>
+    ''' 代码错误检测
+    ''' </summary>
+    ''' <param name="errsrc">错误源码</param>
+    ''' <returns></returns>
+    Public Shared Function errorcheck(ByVal errsrc As String)
+        Dim errormsg As String = Nothing
+        Return errormsg
     End Function
 End Class

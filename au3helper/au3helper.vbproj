@@ -107,7 +107,7 @@
     <Compile Include="App.xaml.vb">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
-    <Compile Include="lib\au3convert.vb" />
+    <Compile Include="inc\au3convert.vb" />
     <Compile Include="cdlg\controlclick_cdlg.xaml.vb">
       <DependentUpon>controlclick_cdlg.xaml</DependentUpon>
     </Compile>
