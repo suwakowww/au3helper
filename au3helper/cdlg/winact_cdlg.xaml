@@ -1,0 +1,29 @@
+﻿<ContentDialog
+    x:Class="au3helper.winact_cdlg"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:au3helper"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Title="操作窗口"
+    PrimaryButtonText="插入"
+    SecondaryButtonText="关闭"
+    PrimaryButtonClick="ContentDialog_PrimaryButtonClick"
+    SecondaryButtonClick="ContentDialog_SecondaryButtonClick">
+
+    <Grid>
+        <StackPanel>
+            <TextBlock>操作</TextBlock>
+            <ComboBox Margin="0,4" x:Name="wa_act" SelectedIndex="0">
+                <ComboBoxItem>激活窗口</ComboBoxItem>
+                <ComboBoxItem>关闭窗口</ComboBoxItem>
+                <ComboBoxItem>关闭窗口（强制）</ComboBoxItem>
+            </ComboBox>
+            <TextBlock>查找窗口标题</TextBlock>
+            <TextBox Margin="0,4" x:Name="wa_title"></TextBox>
+            <TextBlock>查找窗口内可见字符串</TextBlock>
+            <TextBox Margin="0,4" x:Name="wa_string"></TextBox>
+        </StackPanel>
+    </Grid>
+</ContentDialog>

@@ -279,8 +279,13 @@ Public NotInheritable Class MainPage
         checkwidth()
     End Sub
 
-    Private Sub w_action_Click(sender As Object, e As RoutedEventArgs)
-
+    Private Async Sub w_action_Click(sender As Object, e As RoutedEventArgs)
+        Dim winact_dlg_r As ContentDialogResult
+        Dim winact_dlg As New winact_cdlg
+        winact_dlg_r = Await winact_dlg.ShowAsync()
+        If winact_dlg_r = ContentDialogResult.Primary Then
+            rawcode.Text = rawcode.Text + winact_dlg.addcode.Trim() + vbCrLf
+        End If
     End Sub
 
     Private Sub mobile_src_ana_p_SelectionChanged(sender As Object, e As SelectionChangedEventArgs)

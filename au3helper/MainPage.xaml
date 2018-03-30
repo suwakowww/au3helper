@@ -104,6 +104,7 @@
                     <MenuFlyout>
                         <MenuFlyoutSubItem x:Name="winevt_2" Text="窗口操作">
                             <MenuFlyoutItem x:Name="w_wait_2" Text="等待窗口" Click="w_wait_Click"/>
+                            <MenuFlyoutItem x:Name="w_action_2" Text="操作窗口" Click="w_action_Click"/>
                         </MenuFlyoutSubItem>
                         <MenuFlyoutSubItem x:Name="mousekey_2" Text="鼠标操作">
                             <MenuFlyoutItem x:Name="m_move_2" Text="鼠标移动" Click="m_move_Click"/>
