@@ -155,7 +155,7 @@ Public NotInheritable Class MainPage
 
 #Region "检测屏幕宽度"
     Private Sub checkwidth()
-        If Window.Current.Bounds.Width <= 500 Then
+        If Window.Current.Bounds.Width < 640 Then
             '由于这种水平分辨率太小，隐藏这些功能
             winevt.Visibility = Visibility.Collapsed
             mousekey.Visibility = Visibility.Collapsed
