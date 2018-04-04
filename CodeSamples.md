@@ -119,3 +119,61 @@ Private Async Sub sample_button_Click(sender As Object, e As RoutedEventArgs)
     ......
 End Sub
 ```
+
+3. 保存/读取文件
+* 保存文件的代码：
+```vbnet
+    Private Async Sub sample_Tapped(sender As Object, e As TappedRoutedEventArgs)
+    '定义一个事件进行触发，由于用到了异步，所以需要使用 Async
+        Dim write_data As String = "some texts"
+        '定义写入的数据
+        Dim savefile As New FileSavePicker
+        '这个可以打开保存文件的对话框
+        Dim filetype As New Object
+        '这个由于在 c# 代码中为 var 的变量，所以这里转成了比较“万能”的 Object 变量。
+        filetype = {".txt"}
+        '指定保存的文件类型，可自定义
+        savefile.FileTypeChoices.Add("Text File", filetype)
+        '指定保存文件类型的描述，可自定义
+        Dim tofile As StorageFile = Await savefile.PickSaveFileAsync()
+        '异步方式打开保存对话框
+        If tofile IsNot Nothing Then
+        '如果有返回值则继续
+            Using transaction As StorageStreamTransaction = Await tofile.OpenTransactedWriteAsync
+            '这里开始是保存文件的操作，但由于是直接转写 c# 的，有些还不太清楚
+                Using textwrite As DataWriter = New DataWriter(transaction.Stream)
+                    textwrite.WriteString(write_data)
+                    transaction.Stream.Size = Await textwrite.StoreAsync()
+                    Await transaction.CommitAsync()
+                End Using
+            End Using
+        End If
+    End Sub
+```
+
+* 读取文件的代码：
+```vbnet
+    Private Async Sub sample2_Tapped(sender As Object, e As TappedRoutedEventArgs)
+    '同上，用到了异步
+        Dim fileopen As New FileOpenPicker()
+        '这个可以打开打开文件的对话框
+        fileopen.FileTypeFilter.Add(".txt")
+        '过滤文件类型
+        Dim sfile As StorageFile = Await fileopen.PickSingleFileAsync()
+        '异步方式打开打开对话框
+        If sfile IsNot Nothing Then
+        '如果有返回值则继续
+            Using readstream As IRandomAccessStream = Await sfile.OpenAsync(FileAccessMode.Read)
+            '同上，这里是打开文件的操作
+                Using textread As DataReader = New DataReader(readstream)
+                    Dim size As UInt64 = readstream.Size
+                    If size <= UInt32.MaxValue Then
+                        Dim numbytesloaded As UInt32 = Await textread.LoadAsync(Convert.ToInt32(size))
+                        Dim filecontent As String = textread.ReadString(numbytesloaded)
+                        '这个是获取到的内容
+                    End If
+                End Using
+            End Using
+        End If
+    End Sub
+```
