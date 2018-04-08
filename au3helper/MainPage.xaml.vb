@@ -195,7 +195,9 @@ Public NotInheritable Class MainPage
                 End Using
             End Using
         End If
-        mainsplit.IsPaneOpen = Not mainsplit.IsPaneOpen
+        If mainsplit.DisplayMode <> SplitViewDisplayMode.Inline Then
+            mainsplit.IsPaneOpen = Not mainsplit.IsPaneOpen
+        End If
     End Sub
 
     Private Async Sub s_open_Tapped(sender As Object, e As TappedRoutedEventArgs)
@@ -216,7 +218,9 @@ Public NotInheritable Class MainPage
                 End Using
             End Using
         End If
-        mainsplit.IsPaneOpen = Not mainsplit.IsPaneOpen
+        If mainsplit.DisplayMode <> SplitViewDisplayMode.Inline Then
+            mainsplit.IsPaneOpen = Not mainsplit.IsPaneOpen
+        End If
     End Sub
 
     Private Async Sub s_new_Tapped(sender As Object, e As TappedRoutedEventArgs)
@@ -228,7 +232,9 @@ Public NotInheritable Class MainPage
             clearwarn.Commands.Add((New UICommand("取消", AddressOf clearcode, commandId:=1)))
             Dim result As Object = Await clearwarn.ShowAsync()
         End If
-        mainsplit.IsPaneOpen = Not mainsplit.IsPaneOpen
+        If mainsplit.DisplayMode <> SplitViewDisplayMode.Inline Then
+            mainsplit.IsPaneOpen = Not mainsplit.IsPaneOpen
+        End If
     End Sub
 
     Private Sub clearcode(command As IUICommand)
@@ -315,6 +321,9 @@ Public NotInheritable Class MainPage
                     }
                 Await unsupport_dlg.ShowAsync()
         End Select
+        If mainsplit.DisplayMode <> SplitViewDisplayMode.Inline Then
+            mainsplit.IsPaneOpen = Not mainsplit.IsPaneOpen
+        End If
     End Sub
 
     'Private Sub l_d_toggle_Click(sender As Object, e As RoutedEventArgs)

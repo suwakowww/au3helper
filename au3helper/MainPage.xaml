@@ -61,7 +61,7 @@
                             <DataTemplate>
                                 <StackPanel Orientation="Horizontal" ToolTipService.ToolTip="{Binding au3funccat}">
                                     <FontIcon FontFamily="res/FontAwesome.otf#FontAwesome" Glyph="{Binding au3fcicon}" Width="28"/>
-                                    <TextBlock Text="{Binding au3funcs}"/>
+                                    <TextBlock Text="{Binding au3funcs}" Padding="8,0,0,0"/>
                                 </StackPanel>
                             </DataTemplate>
                         </ListView.ItemTemplate>
@@ -71,7 +71,7 @@
                             <ListViewItem.Content>
                                 <StackPanel Orientation="Horizontal">
                                     <FontIcon Glyph="&#xf016;" FontFamily="res/FontAwesome.otf#FontAwesome" Width="28"/>
-                                    <TextBlock Text="新建"/>
+                                    <TextBlock Text="新建" Padding="8,0,0,0"/>
                                 </StackPanel>
                             </ListViewItem.Content>
                         </ListViewItem>
@@ -79,7 +79,7 @@
                             <ListViewItem.Content>
                                 <StackPanel Orientation="Horizontal">
                                     <FontIcon Glyph="&#xf115;" FontFamily="res/FontAwesome.otf#FontAwesome" Width="28"/>
-                                    <TextBlock Text="打开"/>
+                                    <TextBlock Text="打开" Padding="8,0,0,0"/>
                                 </StackPanel>
                             </ListViewItem.Content>
                         </ListViewItem>
@@ -87,7 +87,7 @@
                             <ListViewItem.Content>
                                 <StackPanel Orientation="Horizontal">
                                     <FontIcon Glyph="&#xf0c7;" FontFamily="res/FontAwesome.otf#FontAwesome" Width="28"/>
-                                    <TextBlock Text="保存"/>
+                                    <TextBlock Text="保存" Padding="8,0,0,0"/>
                                 </StackPanel>
                             </ListViewItem.Content>
                         </ListViewItem>

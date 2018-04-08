@@ -35,6 +35,14 @@ Public Class au3func
         func_list.Add(New au3functions With {.au3funccat = "键盘", .au3funcs = "Send", .au3fcicon = ""})
         func_list.Add(New au3functions With {.au3funccat = "计时与延迟", .au3funcs = "Sleep", .au3fcicon = ""})
         func_list.Add(New au3functions With {.au3funccat = "进程", .au3funcs = "Run", .au3fcicon = ""})
+        '18.04.18添加
+        func_list.Add(New au3functions With {.au3funccat = "Windows 控件", .au3funcs = "ControlEnable", .au3fcicon = ""})
+        func_list.Add(New au3functions With {.au3funccat = "Windows 控件", .au3funcs = "ControlDisable", .au3fcicon = ""})
+        func_list.Add(New au3functions With {.au3funccat = "Windows 控件", .au3funcs = "ControlHide", .au3fcicon = ""})
+        func_list.Add(New au3functions With {.au3funccat = "Windows 控件", .au3funcs = "ControlShow", .au3fcicon = ""})
+        func_list.Add(New au3functions With {.au3funccat = "Windows 控件", .au3funcs = "ControlFocus", .au3fcicon = ""})
+        func_list.Add(New au3functions With {.au3funccat = "进程", .au3funcs = "ProcessWait", .au3fcicon = ""})
+        func_list.Add(New au3functions With {.au3funccat = "进程", .au3funcs = "ProcessWaitClose", .au3fcicon = ""})
 
         '排序
         func_list.Sort(AddressOf sortlist)
@@ -42,10 +50,18 @@ Public Class au3func
     End Function
 
     Private Shared Function sortlist(x As au3functions, y As au3functions) As Integer
+        '根据函数类型排序
         If x.au3funccat > y.au3funccat Then
             Return 1
         ElseIf x.au3funccat = y.au3funccat Then
-            Return 0
+            '如果函数类型相同，根据函数名排序
+            If x.au3funcs > y.au3funcs Then
+                Return 1
+            ElseIf x.au3funcs = y.au3funcs Then
+                Return 0
+            Else
+                Return -1
+            End If
         Else
             Return -1
         End If
