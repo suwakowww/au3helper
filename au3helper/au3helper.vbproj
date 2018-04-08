@@ -18,7 +18,7 @@
     <WindowsXamlEnableOverview>true</WindowsXamlEnableOverview>
     <PackageCertificateKeyFile>au3helper_StoreKey.pfx</PackageCertificateKeyFile>
     <PackageCertificateThumbprint>07DF2A1EF22141EC99AE8714E74EF44E7D1F864C</PackageCertificateThumbprint>
-    <AppxAutoIncrementPackageRevision>True</AppxAutoIncrementPackageRevision>
+    <AppxAutoIncrementPackageRevision>False</AppxAutoIncrementPackageRevision>
     <AppxBundle>Always</AppxBundle>
     <AppxBundlePlatforms>x86|x64|arm</AppxBundlePlatforms>
   </PropertyGroup>
@@ -107,6 +107,7 @@
     <Compile Include="App.xaml.vb">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="inc\au3functions.vb" />
     <Compile Include="cdlg\winact_cdlg.xaml.vb">
       <DependentUpon>winact_cdlg.xaml</DependentUpon>
     </Compile>

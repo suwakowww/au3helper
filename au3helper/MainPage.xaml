@@ -33,98 +33,6 @@
                 </AppBarButton.Icon>
             </AppBarButton>
             -->
-            <AppBarButton Label="窗口操作" x:Name="winevt">
-                <AppBarButton.Flyout>
-                    <MenuFlyout x:Name="winevt_menu">
-                        <MenuFlyoutItem Text="等待窗口" x:Name="w_wait" Click="w_wait_Click"/>
-                        <MenuFlyoutItem Text="操作窗口" x:Name="w_action" Click="w_action_Click"/>
-                    </MenuFlyout>
-                </AppBarButton.Flyout>
-                <AppBarButton.Icon>
-                    <FontIcon FontFamily="res/FontAwesome.otf#FontAwesome" Glyph="&#xf022;"></FontIcon>
-                </AppBarButton.Icon>
-
-            </AppBarButton>
-            <AppBarButton Label="鼠标操作" x:Name="mousekey">
-                <AppBarButton.Flyout>
-                    <MenuFlyout>
-                        <MenuFlyoutItem Text="鼠标移动" x:Name="m_move" Click="m_move_Click"/>
-                        <MenuFlyoutItem Text="鼠标点击" x:Name="m_click" Click="m_click_Click"/>
-                    </MenuFlyout>
-                </AppBarButton.Flyout>
-                <AppBarButton.Icon>
-                    <FontIcon FontFamily="res/FontAwesome.otf#FontAwesome" Glyph="&#xf245;"></FontIcon>
-                </AppBarButton.Icon>
-            </AppBarButton>
-            <AppBarButton Label="控件操作" x:Name="clickbtn">
-                <AppBarButton.Icon>
-                    <FontIcon FontFamily="res/FontAwesome.otf#FontAwesome" Glyph="&#xf25a;"/>
-                </AppBarButton.Icon>
-                <AppBarButton.Flyout>
-                    <MenuFlyout>
-                        <MenuFlyoutItem x:Name="c_click" Text="控件点击" Click="c_click_Click"/>
-                    </MenuFlyout>
-                </AppBarButton.Flyout>
-            </AppBarButton>
-            <AppBarButton Label="按键操作" x:Name="cclickbtn">
-                <AppBarButton.Icon>
-                    <FontIcon FontFamily="res/FontAwesome.otf#FontAwesome" Glyph="&#xf11c;"/>
-                </AppBarButton.Icon>
-                <AppBarButton.Flyout>
-                    <MenuFlyout>
-                        <MenuFlyoutItem x:Name="send_key" Text="发送按键" Click="send_key_Click"/>
-                    </MenuFlyout>
-                </AppBarButton.Flyout>
-            </AppBarButton>
-            <AppBarButton Label="计时操作" x:Name="timerbtn">
-                <AppBarButton.Icon>
-                    <FontIcon FontFamily="res/FontAwesome.otf#FontAwesome" Glyph="&#xf017;"/>
-                </AppBarButton.Icon>
-                <AppBarButton.Flyout>
-                    <MenuFlyout>
-                        <MenuFlyoutItem x:Name="sleep" Text="暂停" Click="sleep_Click"/>
-                    </MenuFlyout>
-                </AppBarButton.Flyout>
-            </AppBarButton>
-            <AppBarButton Label="运行操作" x:Name="runbtn">
-                <AppBarButton.Icon>
-                    <FontIcon FontFamily="res/FontAwesome.otf#FontAwesome" Glyph="&#xf120;"/>
-                </AppBarButton.Icon>
-                <AppBarButton.Flyout>
-                    <MenuFlyout>
-                        <MenuFlyoutItem  x:Name="run_exec" Click="run_exec_Click">运行程序</MenuFlyoutItem>
-                    </MenuFlyout>
-                </AppBarButton.Flyout>
-            </AppBarButton>
-            <AppBarButton x:Name="m_menu" Label="插入代码" Visibility="Collapsed">
-                <AppBarButton.Icon>
-                    <FontIcon FontFamily="res/FontAwesome.otf#FontAwesome" Glyph="&#xf121;"/>
-                </AppBarButton.Icon>
-                <AppBarButton.Flyout>
-                    <MenuFlyout>
-                        <MenuFlyoutSubItem x:Name="winevt_2" Text="窗口操作">
-                            <MenuFlyoutItem x:Name="w_wait_2" Text="等待窗口" Click="w_wait_Click"/>
-                            <MenuFlyoutItem x:Name="w_action_2" Text="操作窗口" Click="w_action_Click"/>
-                        </MenuFlyoutSubItem>
-                        <MenuFlyoutSubItem x:Name="mousekey_2" Text="鼠标操作">
-                            <MenuFlyoutItem x:Name="m_move_2" Text="鼠标移动" Click="m_move_Click"/>
-                            <MenuFlyoutItem x:Name="m_click_2" Text="鼠标点击" Click="m_click_Click"/>
-                        </MenuFlyoutSubItem>
-                        <MenuFlyoutSubItem x:Name="clickbtn_2" Text="控件操作">
-                            <MenuFlyoutItem x:Name="c_click_2" Text="控件点击" Click="c_click_Click"/>
-                        </MenuFlyoutSubItem>
-                        <MenuFlyoutSubItem x:Name="cclickbtn_2" Text="按键操作">
-                            <MenuFlyoutItem x:Name="send_key_2" Text="发送按键" Click="send_key_Click"/>
-                        </MenuFlyoutSubItem>
-                        <MenuFlyoutSubItem x:Name="timerbtn_2" Text="计时操作">
-                            <MenuFlyoutItem x:Name="sleep_2" Text="暂停" Click="sleep_Click"/>
-                        </MenuFlyoutSubItem>
-                        <MenuFlyoutSubItem x:Name="runbtn_2" Text="运行操作">
-                            <MenuFlyoutItem x:Name="run_exec_2" Text="运行程序" Click="run_exec_Click"/>
-                        </MenuFlyoutSubItem>
-                    </MenuFlyout>
-                </AppBarButton.Flyout>
-            </AppBarButton>
             <AppBarButton x:Name="low_width" Label="注意" Visibility="Collapsed" Click="low_width_Click">
                 <AppBarButton.Icon>
                     <FontIcon FontFamily="res/FontAwesome.otf#FontAwesome" Glyph="&#xf05a;"></FontIcon>
@@ -148,10 +56,41 @@
         <SplitView x:Name="mainsplit">
             <SplitView.Pane>
                 <Grid>
-                    <ListView>
-                        <ListViewItem x:Name="s_new" Tapped="s_new_Tapped">新建</ListViewItem>
-                        <ListViewItem x:Name="s_open" Tapped="s_open_Tapped">打开</ListViewItem>
-                        <ListViewItem x:Name="s_save" Tapped="s_save_Tapped">保存</ListViewItem>
+                    <ListView x:Name="funclist" Margin="0,0,0,160" ItemClick="funclist_ItemClick" IsItemClickEnabled="True" SelectionMode="None">
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal" ToolTipService.ToolTip="{Binding au3funccat}">
+                                    <FontIcon FontFamily="res/FontAwesome.otf#FontAwesome" Glyph="{Binding au3fcicon}" Width="28"/>
+                                    <TextBlock Text="{Binding au3funcs}"/>
+                                </StackPanel>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+                    <ListView VerticalAlignment="Bottom">
+                        <ListViewItem x:Name="s_new" Tapped="s_new_Tapped">
+                            <ListViewItem.Content>
+                                <StackPanel Orientation="Horizontal">
+                                    <FontIcon Glyph="&#xf016;" FontFamily="res/FontAwesome.otf#FontAwesome" Width="28"/>
+                                    <TextBlock Text="新建"/>
+                                </StackPanel>
+                            </ListViewItem.Content>
+                        </ListViewItem>
+                        <ListViewItem x:Name="s_open" Tapped="s_open_Tapped">
+                            <ListViewItem.Content>
+                                <StackPanel Orientation="Horizontal">
+                                    <FontIcon Glyph="&#xf115;" FontFamily="res/FontAwesome.otf#FontAwesome" Width="28"/>
+                                    <TextBlock Text="打开"/>
+                                </StackPanel>
+                            </ListViewItem.Content>
+                        </ListViewItem>
+                        <ListViewItem x:Name="s_save" Tapped="s_save_Tapped">
+                            <ListViewItem.Content>
+                                <StackPanel Orientation="Horizontal">
+                                    <FontIcon Glyph="&#xf0c7;" FontFamily="res/FontAwesome.otf#FontAwesome" Width="28"/>
+                                    <TextBlock Text="保存"/>
+                                </StackPanel>
+                            </ListViewItem.Content>
+                        </ListViewItem>
                     </ListView>
                 </Grid>
             </SplitView.Pane>

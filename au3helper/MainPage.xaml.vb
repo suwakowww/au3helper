@@ -11,7 +11,6 @@ Imports Windows.UI.Popups
 Public NotInheritable Class MainPage
     Inherits Page
 
-
     Private Sub rawcode_LostFocus(sender As Object, e As RoutedEventArgs)
         converting.IsActive = True
         src2dst()
@@ -53,79 +52,6 @@ Public NotInheritable Class MainPage
         End If
     End Sub
 
-    Private Async Sub m_move_Click(sender As Object, e As RoutedEventArgs)
-        'mousemove_fly.ShowAt(m_move)
-        Dim mousefly_dlg As New mousemove_cdlg
-        Dim mousefly_dlg_r As ContentDialogResult
-        mousefly_dlg_r = Await mousefly_dlg.ShowAsync()
-        If mousefly_dlg_r = ContentDialogResult.Primary Then
-            rawcode.Text = rawcode.Text + mousefly_dlg.addcode + vbCrLf
-        End If
-    End Sub
-
-    Private Async Sub m_click_Click(sender As Object, e As RoutedEventArgs)
-        'mouseclick_fly.ShowAt(m_click)
-        Dim mouseclick_dlg As New mouseclick_cdlg
-        Dim mouseclick_dlg_r As ContentDialogResult
-        mouseclick_dlg_r = Await mouseclick_dlg.ShowAsync()
-        If mouseclick_dlg_r = ContentDialogResult.Primary Then
-            rawcode.Text = rawcode.Text + mouseclick_dlg.addcode + vbCrLf
-        End If
-    End Sub
-
-    Private Async Sub send_key_Click(sender As Object, e As RoutedEventArgs)
-        'sendkey_fly.ShowAt(send_key)
-        Dim sendkey_dlg As New sendkey_cdlg
-        Dim sendkey_dlg_r As ContentDialogResult
-        sendkey_dlg_r = Await sendkey_dlg.ShowAsync()
-        If sendkey_dlg_r = ContentDialogResult.Primary Then
-            rawcode.Text = rawcode.Text + sendkey_dlg.addcode.Trim() + vbCrLf
-        End If
-    End Sub
-
-    Private Async Sub c_click_Click(sender As Object, e As RoutedEventArgs)
-        'controlclick_fly.ShowAt(c_click)
-        Dim controlclick_dlg As New controlclick_cdlg
-        Dim controlclick_dlg_r As ContentDialogResult
-        controlclick_dlg_r = Await controlclick_dlg.ShowAsync()
-        If controlclick_dlg_r = ContentDialogResult.Primary Then
-            rawcode.Text = rawcode.Text + controlclick_dlg.addcode.Trim() + vbCrLf
-        End If
-    End Sub
-
-    Private Async Sub sleep_Click(sender As Object, e As RoutedEventArgs)
-        '原来使用 Flyout 的显现方法
-        'sleep_fly.ShowAt(sleep)
-
-        '更换为使用 ContentDialog 显现
-        Dim sleep_dlg_r As ContentDialogResult
-        Dim sleep_dlg As New sleep_cdlg
-        sleep_dlg_r = Await sleep_dlg.ShowAsync()
-        If sleep_dlg_r = ContentDialogResult.Primary Then
-            rawcode.Text = rawcode.Text + sleep_dlg.addcode.Trim() + vbCrLf
-        End If
-    End Sub
-
-    Private Async Sub w_wait_Click(sender As Object, e As RoutedEventArgs)
-        'winwait_fly.ShowAt(w_wait)
-        Dim winwait_dlg_r As ContentDialogResult
-        Dim winwait_dlg As New winwait_cdlg
-        winwait_dlg_r = Await winwait_dlg.ShowAsync()
-        If winwait_dlg_r = ContentDialogResult.Primary Then
-            rawcode.Text = rawcode.Text + winwait_dlg.addcode.Trim() + vbCrLf
-        End If
-    End Sub
-
-    Private Async Sub run_exec_Click(sender As Object, e As RoutedEventArgs)
-        'run_fly.ShowAt(run_exec)
-        Dim run_dlg_r As ContentDialogResult
-        Dim run_dlg As New run_cdlg
-        run_dlg_r = Await run_dlg.ShowAsync()
-        If run_dlg_r = ContentDialogResult.Primary Then
-            rawcode.Text = rawcode.Text + run_dlg.addcode.Trim() + vbCrLf
-        End If
-    End Sub
-
     Private Async Sub btn_about_Click(sender As Object, e As RoutedEventArgs)
         Dim dlg_content As String
         dlg_content = "一个写 Au3 脚本的工具。" + vbCrLf + "系统平台：" + Windows.System.Profile.AnalyticsInfo.VersionInfo.DeviceFamily + vbCrLf
@@ -150,44 +76,81 @@ Public NotInheritable Class MainPage
 
         End If
         checkwidth()
-
+        additems()
+        Dim menulist As New List(Of au3functions)()
+        menulist = au3func.get_funcs()
+        funclist.ItemsSource = menulist
     End Sub
 
 #Region "检测屏幕宽度"
     Private Sub checkwidth()
-        If Window.Current.Bounds.Width < 640 Then
-            '由于这种水平分辨率太小，隐藏这些功能
-            winevt.Visibility = Visibility.Collapsed
-            mousekey.Visibility = Visibility.Collapsed
-            clickbtn.Visibility = Visibility.Collapsed
-            cclickbtn.Visibility = Visibility.Collapsed
-            timerbtn.Visibility = Visibility.Collapsed
-            runbtn.Visibility = Visibility.Collapsed
-            If Window.Current.Bounds.Width <= 320 Then
+        Select Case Window.Current.Bounds.Width
+            Case Is <= 320
+                mainsplit.DisplayMode = SplitViewDisplayMode.Overlay
+                mainsplit.IsPaneOpen = False
+                left_menu.Visibility = Visibility.Visible
                 low_width.Visibility = Visibility.Visible
-            Else
-                m_menu.Visibility = Visibility.Visible
-            End If
-        Else
-            '由于这种水平分辨率太小，隐藏这些功能
-            winevt.Visibility = Visibility.Visible
-            mousekey.Visibility = Visibility.Visible
-            clickbtn.Visibility = Visibility.Visible
-            cclickbtn.Visibility = Visibility.Visible
-            timerbtn.Visibility = Visibility.Visible
-            runbtn.Visibility = Visibility.Visible
-            low_width.Visibility = Visibility.Collapsed
-            m_menu.Visibility = Visibility.Collapsed
-        End If
-        If Window.Current.Bounds.Width < 768 Then
-            desktop_src.Visibility = Visibility.Collapsed
-            desktop_ana.Visibility = Visibility.Collapsed
-            mobile_src_ana.Visibility = Visibility.Visible
-        Else
-            desktop_src.Visibility = Visibility.Visible
-            desktop_ana.Visibility = Visibility.Visible
-            mobile_src_ana.Visibility = Visibility.Collapsed
-        End If
+                desktop_ana.Visibility = Visibility.Collapsed
+                desktop_src.Visibility = Visibility.Collapsed
+                mobile_src_ana.Visibility = Visibility.Visible
+            Case Is < 640
+                mainsplit.DisplayMode = SplitViewDisplayMode.Overlay
+                mainsplit.IsPaneOpen = False
+                left_menu.Visibility = Visibility.Visible
+                low_width.Visibility = Visibility.Collapsed
+                desktop_ana.Visibility = Visibility.Collapsed
+                desktop_src.Visibility = Visibility.Collapsed
+                mobile_src_ana.Visibility = Visibility.Visible
+            Case Is < 768
+                mainsplit.DisplayMode = SplitViewDisplayMode.Inline
+                mainsplit.IsPaneOpen = True
+                left_menu.Visibility = Visibility.Collapsed
+                low_width.Visibility = Visibility.Collapsed
+                desktop_ana.Visibility = Visibility.Collapsed
+                desktop_src.Visibility = Visibility.Collapsed
+                mobile_src_ana.Visibility = Visibility.Visible
+            Case Is < 1280
+                mainsplit.DisplayMode = SplitViewDisplayMode.Overlay
+                mainsplit.IsPaneOpen = False
+                left_menu.Visibility = Visibility.Visible
+                low_width.Visibility = Visibility.Collapsed
+                desktop_ana.Visibility = Visibility.Visible
+                desktop_src.Visibility = Visibility.Visible
+                mobile_src_ana.Visibility = Visibility.Collapsed
+            Case Else
+                mainsplit.DisplayMode = SplitViewDisplayMode.Inline
+                mainsplit.IsPaneOpen = True
+                left_menu.Visibility = Visibility.Collapsed
+                low_width.Visibility = Visibility.Collapsed
+                desktop_ana.Visibility = Visibility.Visible
+                desktop_src.Visibility = Visibility.Visible
+                mobile_src_ana.Visibility = Visibility.Collapsed
+        End Select
+        'If Window.Current.Bounds.Width < 640 Then
+        '    '由于这种水平分辨率太小，隐藏这些功能
+        '    mainsplit.DisplayMode = SplitViewDisplayMode.Overlay
+        '    left_menu.Visibility = Visibility.Visible
+        '    If Window.Current.Bounds.Width <= 320 Then
+        '        low_width.Visibility = Visibility.Visible
+        '    End If
+        'ElseIf Window.Current.Bounds.Width >= 1280 Then
+        '    '由于这种水平分辨率太小，隐藏这些功能
+        '    mainsplit.DisplayMode = SplitViewDisplayMode.Inline
+        '    mainsplit.IsPaneOpen = True
+        '    left_menu.Visibility = Visibility.Collapsed
+        'Else
+        '    mainsplit.DisplayMode = SplitViewDisplayMode.Overlay
+        '    left_menu.Visibility = Visibility.Visible
+        'End If
+        'If Window.Current.Bounds.Width < 768 Then
+        '    desktop_src.Visibility = Visibility.Collapsed
+        '    desktop_ana.Visibility = Visibility.Collapsed
+        '    mobile_src_ana.Visibility = Visibility.Visible
+        'Else
+        '    desktop_src.Visibility = Visibility.Visible
+        '    desktop_ana.Visibility = Visibility.Visible
+        '    mobile_src_ana.Visibility = Visibility.Collapsed
+        'End If
     End Sub
 #End Region
 
@@ -279,20 +242,80 @@ Public NotInheritable Class MainPage
         checkwidth()
     End Sub
 
-    Private Async Sub w_action_Click(sender As Object, e As RoutedEventArgs)
-        Dim winact_dlg_r As ContentDialogResult
-        Dim winact_dlg As New winact_cdlg
-        winact_dlg_r = Await winact_dlg.ShowAsync()
-        If winact_dlg_r = ContentDialogResult.Primary Then
-            rawcode.Text = rawcode.Text + winact_dlg.addcode.Trim() + vbCrLf
-        End If
-    End Sub
-
     Private Sub mobile_src_ana_p_SelectionChanged(sender As Object, e As SelectionChangedEventArgs)
         src2dst_m()
     End Sub
 
+    Public Sub additems()
+        'Dim mainitem As List(Of au3functions) = New List(Of au3functions)()
+        'mainitem.Add(New au3functions With {.au3funcs = "WinWait", .au3funccat = "Windows 窗口"})
+        'Dim items As List(Of au3funcgrp) = (From item In mainitem
+        '                                    Group item By item.au3funccat Into g
+        '                                    Select New au3funcgrp With {.key = g.key, .itemcontent = g.ToList()}).tolist()
+    End Sub
 
+    '重写的函数列表，原菜单删除
+    Private Async Sub funclist_ItemClick(sender As Object, e As ItemClickEventArgs)
+        Dim dlg_r As ContentDialogResult
+        Select Case DirectCast(e.ClickedItem, au3helper.au3functions).au3funcs
+            Case Is = "WinWait", Is = "WinWaitActive", Is = "WinWaitClose", Is = "WinWaitNotActive"
+                Dim winwait_dlg As New winwait_cdlg
+                dlg_r = Await winwait_dlg.ShowAsync()
+                If dlg_r = ContentDialogResult.Primary Then
+                    rawcode.Text = rawcode.Text + winwait_dlg.addcode.Trim() + vbCrLf
+                End If
+            Case Is = "WinActive", Is = "WinClose", Is = "WinKill"
+                Dim winact_dlg As New winact_cdlg
+                dlg_r = Await winact_dlg.ShowAsync()
+                If dlg_r = ContentDialogResult.Primary Then
+                    rawcode.Text = rawcode.Text + winact_dlg.addcode.Trim() + vbCrLf
+                End If
+            Case Is = "MouseMove"
+                Dim mousemove_dlg As New mousemove_cdlg
+                dlg_r = Await mousemove_dlg.ShowAsync()
+                If dlg_r = ContentDialogResult.Primary Then
+                    rawcode.Text = rawcode.Text + mousemove_dlg.addcode.Trim() + vbCrLf
+                End If
+            Case Is = "MouseClick"
+                Dim mouseclick_dlg As New mouseclick_cdlg
+                dlg_r = Await mouseclick_dlg.ShowAsync()
+                If dlg_r = ContentDialogResult.Primary Then
+                    rawcode.Text = rawcode.Text + mouseclick_dlg.addcode.Trim() + vbCrLf
+                End If
+            Case Is = "ControlClick"
+                Dim controlclick_dlg As New controlclick_cdlg
+                dlg_r = Await controlclick_dlg.ShowAsync()
+                If dlg_r = ContentDialogResult.Primary Then
+                    rawcode.Text = rawcode.Text + controlclick_dlg.addcode.Trim() + vbCrLf
+                End If
+            Case Is = "Send"
+                Dim sendkey_dlg As New sendkey_cdlg
+                dlg_r = Await sendkey_dlg.ShowAsync()
+                If dlg_r = ContentDialogResult.Primary Then
+                    rawcode.Text = rawcode.Text + sendkey_dlg.addcode.Trim() + vbCrLf
+                End If
+            Case Is = "Sleep"
+                Dim sleep_dlg As New sleep_cdlg
+                dlg_r = Await sleep_dlg.ShowAsync()
+                If dlg_r = ContentDialogResult.Primary Then
+                    rawcode.Text = rawcode.Text + sleep_dlg.addcode.Trim() + vbCrLf
+                End If
+            Case "Run"
+                Dim run_dlg As New run_cdlg
+                dlg_r = Await run_dlg.ShowAsync()
+                If dlg_r = ContentDialogResult.Primary Then
+                    rawcode.Text = rawcode.Text + run_dlg.addcode.Trim() + vbCrLf
+                End If
+            Case Else
+                Dim unsupport_dlg As New ContentDialog With
+                    {
+                    .Title = "未支持的函数",
+                    .Content = "本函数尚未支持生成。",
+                    .PrimaryButtonText = "关闭"
+                    }
+                Await unsupport_dlg.ShowAsync()
+        End Select
+    End Sub
 
     'Private Sub l_d_toggle_Click(sender As Object, e As RoutedEventArgs)
     'If CType(Window.Current.Content, Frame).RequestedTheme = ApplicationTheme.Light Then
