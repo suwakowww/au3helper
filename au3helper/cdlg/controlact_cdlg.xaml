@@ -1,0 +1,36 @@
+﻿<ContentDialog
+    x:Class="au3helper.controlact_cdlg"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:au3helper"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Title="控件操作"
+    PrimaryButtonText="插入"
+    SecondaryButtonText="关闭"
+    PrimaryButtonClick="ContentDialog_PrimaryButtonClick"
+    SecondaryButtonClick="ContentDialog_SecondaryButtonClick"
+    Loaded="ContentDialog_Loaded">
+
+    <Grid>
+        <ScrollViewer x:Name="scrollbar">
+            <StackPanel Margin="0,0,12,0">
+                <TextBlock>控件操作</TextBlock>
+                <ComboBox Margin="0,4" x:Name="ca_act" SelectedIndex="0">
+                    <ComboBoxItem>启用（取消灰控件）</ComboBoxItem>
+                    <ComboBoxItem>禁用（控件变灰）</ComboBoxItem>
+                    <ComboBoxItem>显示（显现隐藏控件）</ComboBoxItem>
+                    <ComboBoxItem>隐藏（控件消失）</ComboBoxItem>
+                    <ComboBoxItem>定位（定位控件位置）</ComboBoxItem>
+                </ComboBox>
+                <TextBlock>查找窗口标题</TextBlock>
+                <TextBox x:Name="c_act_title" Margin="0,4"></TextBox>
+                <TextBlock>查找窗口内可见字符串</TextBlock>
+                <TextBox x:Name="c_act_string" Margin="0,4"></TextBox>
+                <TextBlock>窗口内控件 ID</TextBlock>
+                <TextBox x:Name="c_act_id" Margin="0,4"></TextBox>
+            </StackPanel>
+        </ScrollViewer>
+    </Grid>
+</ContentDialog>

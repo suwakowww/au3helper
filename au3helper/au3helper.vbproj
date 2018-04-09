@@ -107,6 +107,12 @@
     <Compile Include="App.xaml.vb">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="cdlg\controlact_cdlg.xaml.vb">
+      <DependentUpon>controlact_cdlg.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="cdlg\processwait_cdlg.xaml.vb">
+      <DependentUpon>processwait_cdlg.xaml</DependentUpon>
+    </Compile>
     <Compile Include="inc\au3functions.vb" />
     <Compile Include="cdlg\winact_cdlg.xaml.vb">
       <DependentUpon>winact_cdlg.xaml</DependentUpon>
@@ -208,7 +214,15 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Page Include="cdlg\controlact_cdlg.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="cdlg\controlclick_cdlg.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="cdlg\processwait_cdlg.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

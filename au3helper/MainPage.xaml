@@ -38,13 +38,11 @@
                     <FontIcon FontFamily="res/FontAwesome.otf#FontAwesome" Glyph="&#xf05a;"></FontIcon>
                 </AppBarButton.Icon>
             </AppBarButton>
-            <!--
             <AppBarButton x:Name="l_d_toggle" Label="切换主题" Click="l_d_toggle_Click">
                 <AppBarButton.Icon>
-                    <FontIcon FontFamily="res/FontAwesome.otf#FontAwesome" Glyph="&#xf042;"></FontIcon>
+                    <FontIcon FontFamily="res/FontAwesome.otf#FontAwesome" Glyph="&#xf185;"></FontIcon>
                 </AppBarButton.Icon>
             </AppBarButton>
-            -->
             <CommandBar.SecondaryCommands>
                 <AppBarButton Label="关于" x:Name="btn_about" Click="btn_about_Click"/>
             </CommandBar.SecondaryCommands>

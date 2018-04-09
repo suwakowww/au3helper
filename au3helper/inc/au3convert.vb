@@ -155,7 +155,7 @@ Public Class au3convert
 #End Region
 
 #Region "Control 控件操作函数（三参数）"
-        ElseIf Regex.Matches(src, "control(disable|enable|hide|show|focus)\(").Count > 0 Then
+        ElseIf Regex.Matches(src, "control(disable|enable|hide|show|focus)\(", RegexOptions.IgnoreCase).Count > 0 Then
             Dim c_regestr As String = "control(disable|enable|hide|show|focus)\(""(.+?)"",""(.+?)"",([0-9]+)\)"
             If Regex.Matches(src, c_regestr, RegexOptions.IgnoreCase).Count > 0 Then
                 result = Regex.Replace(src, c_regestr, "$1 带有 $3 字符串的 $2 窗口内的 $4 控件", RegexOptions.IgnoreCase)
