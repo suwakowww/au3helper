@@ -3,6 +3,7 @@ Imports System.Text.RegularExpressions
 Imports Windows.Storage
 Imports Windows.Storage.Pickers
 Imports Windows.Storage.Streams
+Imports Windows.UI
 Imports Windows.UI.Popups
 
 ''' <summary>
@@ -10,6 +11,8 @@ Imports Windows.UI.Popups
 ''' </summary>
 Public NotInheritable Class MainPage
     Inherits Page
+
+    Public setbkg_frompath As Boolean
 
     Private Sub rawcode_LostFocus(sender As Object, e As RoutedEventArgs)
         converting.IsActive = True
@@ -72,15 +75,21 @@ Public NotInheritable Class MainPage
         Await Windows.System.Launcher.LaunchUriAsync(New Uri("https://github.com/suwakowww/au3helper"))
     End Sub
 
-    Private Sub Mainpage_Loaded(sender As Object, e As RoutedEventArgs)
+    Private Async Sub Mainpage_Loaded(sender As Object, e As RoutedEventArgs)
         If Windows.System.Profile.AnalyticsInfo.VersionInfo.DeviceFamily = "Windows.Mobile" Then
-
+            use_background.Visibility = Visibility.Collapsed
+            '手机在替换背景的时候会触发“拒绝访问”问题，先暂时禁用
         End If
         checkwidth()
         additems()
         Dim menulist As New List(Of au3functions)()
+        Dim bkgfile As StorageFile
         menulist = au3func.get_funcs()
         funclist.ItemsSource = menulist
+        bkgfile = Await ApplicationData.Current.LocalFolder.TryGetItemAsync("bkg.jpg")
+        If bkgfile IsNot Nothing Then
+            set_bkg()
+        End If
     End Sub
 
 #Region "检测屏幕宽度"
@@ -159,8 +168,8 @@ Public NotInheritable Class MainPage
     Private Async Sub low_width_Click(sender As Object, e As RoutedEventArgs)
         Dim low_width_dlg As New ContentDialog With
             {
-                .Title = "一部分功能已禁用",
-                .Content = "由于屏幕宽度太低，无法完整显示所有内容，故禁用了一部分功能。" + vbCrLf + "请考虑降低 DPI 设置使用。" + vbCrLf + "（可能需要重启）",
+                .Title = "应用可能工作不正常",
+                .Content = "由于屏幕宽度太低，可能无法完整显示所有内容。" + vbCrLf + "请考虑降低 DPI 设置使用。" + vbCrLf + "（可能需要重启）",
                 .PrimaryButtonText = "显示设置",
                 .SecondaryButtonText = "关闭"
             }
@@ -262,6 +271,7 @@ Public NotInheritable Class MainPage
     End Sub
 
     '重写的函数列表，原菜单删除
+#Region "函数列表"
     Private Async Sub funclist_ItemClick(sender As Object, e As ItemClickEventArgs)
         Dim dlg_r As ContentDialogResult
         Select Case DirectCast(e.ClickedItem, au3helper.au3functions).au3funcs
@@ -338,10 +348,14 @@ Public NotInheritable Class MainPage
             mainsplit.IsPaneOpen = Not mainsplit.IsPaneOpen
         End If
     End Sub
+#End Region
 
-    Private Sub l_d_toggle_Click(sender As Object, e As RoutedEventArgs)
+    Private Async Sub l_d_toggle_Click(sender As Object, e As RoutedEventArgs)
         '（U+F185），太阳
         '（U+F186），月亮
+        Dim grid_bkg As SolidColorBrush = New SolidColorBrush()
+        Dim testfile As StorageFile
+        grid_bkg.Color = Colors.White
         If CType(Window.Current.Content, Frame).RequestedTheme = ApplicationTheme.Light Then
             CType(Window.Current.Content, Frame).RequestedTheme = ApplicationTheme.Dark
             DirectCast(DirectCast(sender, AppBarButton).Icon, FontIcon).Glyph = ""
@@ -349,10 +363,93 @@ Public NotInheritable Class MainPage
             CType(Window.Current.Content, Frame).RequestedTheme = ApplicationTheme.Light
             DirectCast(DirectCast(sender, AppBarButton).Icon, FontIcon).Glyph = ""
         End If
+        testfile = Await ApplicationData.Current.LocalFolder.TryGetItemAsync("bkg.jpg")
+        If testfile IsNot Nothing Then
+            If CType(Window.Current.Content, Frame).RequestedTheme = ApplicationTheme.Dark Then
+                mainsplit.Background = grid_bkg
+                mainsplit.Background.Opacity = 0.5
+            Else
+                mainsplit.Background = Nothing
+            End If
+            set_bkg()
+            'Else
+            '    If CType(Window.Current.Content, Frame).RequestedTheme = ApplicationTheme.Light Then
+            '        mainsplit.Background = New SolidColorBrush(Colors.White)
+            '    Else
+            '        mainsplit.Background = New SolidColorBrush(Colors.Black)
+            '    End If
+        End If
         'If Application.Current.RequestedTheme = ApplicationTheme.Light Then
         '    Application.Current.RequestedTheme = ApplicationTheme.Dark
         'Else
         '    Application.Current.RequestedTheme = ApplicationTheme.Light
         'End If
+    End Sub
+
+    Private Async Sub use_background_Click(sender As Object, e As RoutedEventArgs)
+        Dim localpath As StorageFolder = ApplicationData.Current.LocalFolder
+        Dim tmppath As StorageFolder = ApplicationData.Current.TemporaryFolder
+        Dim fileopen As New FileOpenPicker()
+        fileopen.FileTypeFilter.Add(".jpg")
+        fileopen.FileTypeFilter.Add(".png")
+        fileopen.FileTypeFilter.Add(".bmp")
+        Dim sfile As StorageFile = Await fileopen.PickSingleFileAsync()
+        If sfile IsNot Nothing Then
+            Dim filetoken As String = Windows.Storage.AccessCache.StorageApplicationPermissions.FutureAccessList.Add(sfile)
+            Dim checkname As StorageFile
+            Dim delfile As StorageFile = Await ApplicationData.Current.LocalFolder.TryGetItemAsync("bkg.jpg")
+            If setbkg_frompath = True Or delfile IsNot Nothing Then
+                If delfile IsNot Nothing Then
+                    delfile = Await localpath.GetFileAsync("bkg.jpg")
+                    Await delfile.MoveAsync(tmppath, "del.jpg", NameCollisionOption.GenerateUniqueName)
+                    '有没有人给个可以删除旧文件的方法啊，没有只能这样往临时文件扔了
+                End If
+                setbkg_frompath = False
+                Dim restart As New ContentDialog With
+                    {
+                    .Title = "修改完成",
+                    .Content = "如果发现没有修改背景，重新启动应用后即可生效。",
+                    .PrimaryButtonText = "关闭"
+                    }
+                Await restart.ShowAsync()
+            End If
+            checkname = Await sfile.CopyAsync(localpath, "bkg.jpg", NameCollisionOption.ReplaceExisting)
+            set_bkg()
+            setbkg_frompath = True
+        End If
+    End Sub
+
+    Private Sub set_bkg()
+        Dim bkg As ImageBrush = New ImageBrush()
+        bkg.ImageSource = New BitmapImage(New Uri("ms-appdata:///local/bkg.jpg", UriKind.Absolute))
+        bkg.Stretch = Stretch.UniformToFill
+        bkg.Opacity = 0.5
+        Mainpage.Background = bkg
+        maingrid.Background = Nothing
+        main_topbar.Background.Opacity = 0.5
+        mainsplit.PaneBackground.Opacity = 0.8
+        del_background.Visibility = Visibility.Visible
+    End Sub
+
+    Private Async Sub del_background_Click(sender As Object, e As RoutedEventArgs)
+        Dim localpath As StorageFolder = ApplicationData.Current.LocalFolder
+        Dim tmppath As StorageFolder = ApplicationData.Current.TemporaryFolder
+        Dim delfile As StorageFile = Await localpath.GetFileAsync("bkg.jpg")
+        Dim restart As New ContentDialog With
+                    {
+                    .Title = "删除完成",
+                    .Content = "如果发现没有删除背景，或者应用配色异常，重新启动应用后即可恢复。",
+                    .PrimaryButtonText = "关闭"
+                    }
+        Await delfile.MoveAsync(tmppath, "del.jpg", NameCollisionOption.GenerateUniqueName)
+        del_background.Visibility = Visibility.Collapsed
+        Mainpage.Background = Nothing
+        mainsplit.Background = Nothing
+        'If CType(Window.Current.Content, Frame).RequestedTheme = ApplicationTheme.Light Then
+        '    mainsplit.Background = New SolidColorBrush(Colors.White)
+        'Else
+        '    mainsplit.Background = New SolidColorBrush(Colors.Black)
+        'End If
+        Await restart.ShowAsync()
     End Sub
 End Class
