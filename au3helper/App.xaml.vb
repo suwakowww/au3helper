@@ -1,4 +1,5 @@
-﻿''' <summary>
+﻿Imports Windows.UI.Core
+''' <summary>
 ''' 既定の Application クラスを補完するアプリケーション固有の動作を提供します。
 ''' </summary>
 NotInheritable Class App
@@ -15,6 +16,10 @@ NotInheritable Class App
 
         ' ウィンドウに既にコンテンツが表示されている場合は、アプリケーションの初期化を繰り返さずに、
         ' ウィンドウがアクティブであることだけを確認してください
+
+        '返回键事件
+        AddHandler Windows.UI.Core.SystemNavigationManager.GetForCurrentView().BackRequested, AddressOf BackRequested
+
 
         If rootFrame Is Nothing Then
             ' ナビゲーション コンテキストとして動作するフレームを作成し、最初のページに移動します
@@ -39,7 +44,41 @@ NotInheritable Class App
 
             ' 現在のウィンドウがアクティブであることを確認します
             Window.Current.Activate()
+
+            '返回键的显示 / 隐藏
+            If rootFrame.CanGoBack Then
+                SystemNavigationManager.GetForCurrentView().AppViewBackButtonVisibility = AppViewBackButtonVisibility.Visible
+            Else
+                SystemNavigationManager.GetForCurrentView().AppViewBackButtonVisibility = AppViewBackButtonVisibility.Collapsed
+            End If
+
+            AddHandler rootFrame.Navigated, AddressOf OnNavigated
         End If
+    End Sub
+
+    '导航后返回键处理
+    Private Sub OnNavigated(sender As Object, e As NavigationEventArgs)
+        If TryCast(sender, Frame).CanGoBack = True Then
+            SystemNavigationManager.GetForCurrentView().AppViewBackButtonVisibility = AppViewBackButtonVisibility.Visible
+        Else
+            SystemNavigationManager.GetForCurrentView().AppViewBackButtonVisibility = AppViewBackButtonVisibility.Collapsed
+        End If
+    End Sub
+
+    '点击返回键处理
+    Private Sub BackRequested(sender As Object, e As BackRequestedEventArgs)
+        Dim rootFrame As Frame = TryCast(Window.Current.Content, Frame)
+        If rootFrame Is Nothing Then
+            Return
+        End If
+        If rootFrame.CanGoBack AndAlso e.Handled = False Then
+            e.Handled = True
+            rootFrame.GoBack()
+        End If
+        Select Case TryCast(Window.Current.Content, Frame)
+            Case Else
+
+        End Select
     End Sub
 
     ''' <summary>
@@ -63,5 +102,6 @@ NotInheritable Class App
         ' TODO: アプリケーションの状態を保存してバックグラウンドの動作があれば停止します
         deferral.Complete()
     End Sub
+
 
 End Class

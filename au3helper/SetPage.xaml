@@ -1,0 +1,23 @@
+﻿<Page
+    x:Class="au3helper.SetPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:au3helper"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Loaded="Page_Loaded">
+
+    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+        <ScrollViewer>
+            <StackPanel Margin="8,4,12,4">
+                <TextBlock Text="背景设置"/>
+                <Button Margin="0,4" x:Name="set_bkg" Content="选择背景" Click="set_bkg_Click"/>
+                <Button Margin="0,4" x:Name="del_bkg" Content="删除背景" Click="del_bkg_Click"/>
+                <TextBlock Text="应用配色"/>
+                <RadioButton GroupName="app_col" x:Name="c_light" Content="亮" Checked="c_light_dark_Checked"/>
+                <RadioButton GroupName="app_col" x:Name="c_dark" Content="暗" Checked="c_light_dark_Checked"/>
+            </StackPanel>
+        </ScrollViewer>
+    </Grid>
+</Page>

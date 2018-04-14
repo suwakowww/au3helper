@@ -121,6 +121,7 @@
     <Compile Include="cdlg\controlclick_cdlg.xaml.vb">
       <DependentUpon>controlclick_cdlg.xaml</DependentUpon>
     </Compile>
+    <Compile Include="inc\setbkg.vb" />
     <Compile Include="MainPage.xaml.vb">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
@@ -142,6 +143,9 @@
     </Compile>
     <Compile Include="cdlg\winwait_cdlg.xaml.vb">
       <DependentUpon>winwait_cdlg.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="SetPage.xaml.vb">
+      <DependentUpon>SetPage.xaml</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
@@ -255,6 +259,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="cdlg\winwait_cdlg.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="SetPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

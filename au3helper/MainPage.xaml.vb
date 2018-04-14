@@ -77,8 +77,7 @@ Public NotInheritable Class MainPage
 
     Private Async Sub Mainpage_Loaded(sender As Object, e As RoutedEventArgs)
         If Windows.System.Profile.AnalyticsInfo.VersionInfo.DeviceFamily = "Windows.Mobile" Then
-            use_background.Visibility = Visibility.Collapsed
-            '手机在替换背景的时候会触发“拒绝访问”问题，先暂时禁用
+
         End If
         checkwidth()
         additems()
@@ -88,7 +87,11 @@ Public NotInheritable Class MainPage
         funclist.ItemsSource = menulist
         bkgfile = Await ApplicationData.Current.LocalFolder.TryGetItemAsync("bkg.jpg")
         If bkgfile IsNot Nothing Then
-            set_bkg()
+            set_mainpage_bkg()
+        Else
+            main_topbar.Background.Opacity = 1
+            mainsplit.PaneBackground.Opacity = 1
+            mainsplit.Background = Nothing
         End If
     End Sub
 
@@ -136,31 +139,6 @@ Public NotInheritable Class MainPage
                 desktop_src.Visibility = Visibility.Visible
                 mobile_src_ana.Visibility = Visibility.Collapsed
         End Select
-        'If Window.Current.Bounds.Width < 640 Then
-        '    '由于这种水平分辨率太小，隐藏这些功能
-        '    mainsplit.DisplayMode = SplitViewDisplayMode.Overlay
-        '    left_menu.Visibility = Visibility.Visible
-        '    If Window.Current.Bounds.Width <= 320 Then
-        '        low_width.Visibility = Visibility.Visible
-        '    End If
-        'ElseIf Window.Current.Bounds.Width >= 1280 Then
-        '    '由于这种水平分辨率太小，隐藏这些功能
-        '    mainsplit.DisplayMode = SplitViewDisplayMode.Inline
-        '    mainsplit.IsPaneOpen = True
-        '    left_menu.Visibility = Visibility.Collapsed
-        'Else
-        '    mainsplit.DisplayMode = SplitViewDisplayMode.Overlay
-        '    left_menu.Visibility = Visibility.Visible
-        'End If
-        'If Window.Current.Bounds.Width < 768 Then
-        '    desktop_src.Visibility = Visibility.Collapsed
-        '    desktop_ana.Visibility = Visibility.Collapsed
-        '    mobile_src_ana.Visibility = Visibility.Visible
-        'Else
-        '    desktop_src.Visibility = Visibility.Visible
-        '    desktop_ana.Visibility = Visibility.Visible
-        '    mobile_src_ana.Visibility = Visibility.Collapsed
-        'End If
     End Sub
 #End Region
 
@@ -350,106 +328,20 @@ Public NotInheritable Class MainPage
     End Sub
 #End Region
 
-    Private Async Sub l_d_toggle_Click(sender As Object, e As RoutedEventArgs)
-        '（U+F185），太阳
-        '（U+F186），月亮
-        Dim grid_bkg As SolidColorBrush = New SolidColorBrush()
-        Dim testfile As StorageFile
-        grid_bkg.Color = Colors.White
-        If CType(Window.Current.Content, Frame).RequestedTheme = ApplicationTheme.Light Then
-            CType(Window.Current.Content, Frame).RequestedTheme = ApplicationTheme.Dark
-            DirectCast(DirectCast(sender, AppBarButton).Icon, FontIcon).Glyph = ""
-        Else
-            CType(Window.Current.Content, Frame).RequestedTheme = ApplicationTheme.Light
-            DirectCast(DirectCast(sender, AppBarButton).Icon, FontIcon).Glyph = ""
-        End If
-        testfile = Await ApplicationData.Current.LocalFolder.TryGetItemAsync("bkg.jpg")
-        If testfile IsNot Nothing Then
-            If CType(Window.Current.Content, Frame).RequestedTheme = ApplicationTheme.Dark Then
-                mainsplit.Background = grid_bkg
-                mainsplit.Background.Opacity = 0.5
-            Else
-                mainsplit.Background = Nothing
-            End If
-            set_bkg()
-            'Else
-            '    If CType(Window.Current.Content, Frame).RequestedTheme = ApplicationTheme.Light Then
-            '        mainsplit.Background = New SolidColorBrush(Colors.White)
-            '    Else
-            '        mainsplit.Background = New SolidColorBrush(Colors.Black)
-            '    End If
-        End If
-        'If Application.Current.RequestedTheme = ApplicationTheme.Light Then
-        '    Application.Current.RequestedTheme = ApplicationTheme.Dark
-        'Else
-        '    Application.Current.RequestedTheme = ApplicationTheme.Light
-        'End If
-    End Sub
-
-    Private Async Sub use_background_Click(sender As Object, e As RoutedEventArgs)
-        Dim localpath As StorageFolder = ApplicationData.Current.LocalFolder
-        Dim tmppath As StorageFolder = ApplicationData.Current.TemporaryFolder
-        Dim fileopen As New FileOpenPicker()
-        fileopen.FileTypeFilter.Add(".jpg")
-        fileopen.FileTypeFilter.Add(".png")
-        fileopen.FileTypeFilter.Add(".bmp")
-        Dim sfile As StorageFile = Await fileopen.PickSingleFileAsync()
-        If sfile IsNot Nothing Then
-            Dim filetoken As String = Windows.Storage.AccessCache.StorageApplicationPermissions.FutureAccessList.Add(sfile)
-            Dim checkname As StorageFile
-            Dim delfile As StorageFile = Await ApplicationData.Current.LocalFolder.TryGetItemAsync("bkg.jpg")
-            If setbkg_frompath = True Or delfile IsNot Nothing Then
-                If delfile IsNot Nothing Then
-                    delfile = Await localpath.GetFileAsync("bkg.jpg")
-                    Await delfile.MoveAsync(tmppath, "del.jpg", NameCollisionOption.GenerateUniqueName)
-                    '有没有人给个可以删除旧文件的方法啊，没有只能这样往临时文件扔了
-                End If
-                setbkg_frompath = False
-                Dim restart As New ContentDialog With
-                    {
-                    .Title = "修改完成",
-                    .Content = "如果发现没有修改背景，重新启动应用后即可生效。",
-                    .PrimaryButtonText = "关闭"
-                    }
-                Await restart.ShowAsync()
-            End If
-            checkname = Await sfile.CopyAsync(localpath, "bkg.jpg", NameCollisionOption.ReplaceExisting)
-            set_bkg()
-            setbkg_frompath = True
-        End If
-    End Sub
-
-    Private Sub set_bkg()
-        Dim bkg As ImageBrush = New ImageBrush()
-        bkg.ImageSource = New BitmapImage(New Uri("ms-appdata:///local/bkg.jpg", UriKind.Absolute))
-        bkg.Stretch = Stretch.UniformToFill
-        bkg.Opacity = 0.5
-        Mainpage.Background = bkg
+    Private Sub set_mainpage_bkg()
+        setbkg.set_bkg(TryCast(Me, Page))
         maingrid.Background = Nothing
         main_topbar.Background.Opacity = 0.5
         mainsplit.PaneBackground.Opacity = 0.8
-        del_background.Visibility = Visibility.Visible
+        If TryCast(Window.Current.Content, Frame).RequestedTheme = ElementTheme.Light Then
+            mainsplit.Background = New SolidColorBrush(Colors.White)
+            mainsplit.Background.Opacity = 0.5
+        Else
+            mainsplit.Background = Nothing
+        End If
     End Sub
 
-    Private Async Sub del_background_Click(sender As Object, e As RoutedEventArgs)
-        Dim localpath As StorageFolder = ApplicationData.Current.LocalFolder
-        Dim tmppath As StorageFolder = ApplicationData.Current.TemporaryFolder
-        Dim delfile As StorageFile = Await localpath.GetFileAsync("bkg.jpg")
-        Dim restart As New ContentDialog With
-                    {
-                    .Title = "删除完成",
-                    .Content = "如果发现没有删除背景，或者应用配色异常，重新启动应用后即可恢复。",
-                    .PrimaryButtonText = "关闭"
-                    }
-        Await delfile.MoveAsync(tmppath, "del.jpg", NameCollisionOption.GenerateUniqueName)
-        del_background.Visibility = Visibility.Collapsed
-        Mainpage.Background = Nothing
-        mainsplit.Background = Nothing
-        'If CType(Window.Current.Content, Frame).RequestedTheme = ApplicationTheme.Light Then
-        '    mainsplit.Background = New SolidColorBrush(Colors.White)
-        'Else
-        '    mainsplit.Background = New SolidColorBrush(Colors.Black)
-        'End If
-        Await restart.ShowAsync()
+    Private Sub to_setting_Click(sender As Object, e As RoutedEventArgs)
+        Frame.Navigate(GetType(SetPage))
     End Sub
 End Class
