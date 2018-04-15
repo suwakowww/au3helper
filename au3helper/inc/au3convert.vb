@@ -283,6 +283,42 @@ Public Class au3convert
             End If
 #End Region
 
+#Region "文件（夹）复制 / 移动"
+        ElseIf Regex.Matches(src, "(dir|file)(copy|move)\(", RegexOptions.IgnoreCase).count > 0 Then
+            Dim dir_c_m As String() = New String() _
+                {
+                "(dir|file)(copy|move)\(""(.+?)"",""(.+?)""\)",
+                "(dir|file)(copy|move)\(""(.+?)"",""(.+?)"",(0|1)\)"
+                }
+            Select Case Regex.Matches(src, """,").Count
+                Case 1
+                    If Regex.Matches(src, dir_c_m(0), RegexOptions.IgnoreCase).Count > 0 Then
+                        result = Regex.Replace(src, dir_c_m(0), "将 $3 （$1） （$2） 到 $4 位置")
+                    Else
+                        errorflag = True
+                        result = "语法错误：" + src
+                    End If
+                Case 2
+                    If Regex.Matches(src, dir_c_m(1), RegexOptions.IgnoreCase).Count > 0 Then
+                        result = Regex.Replace(src, dir_c_m(1), "将 $3 （$1） （$2） 到 $4 位置（$5）")
+                    Else
+                        errorflag = True
+                        result = "语法错误：" + src
+                    End If
+                Case Else
+                    errorflag = True
+                    result = "参数错误：" + src
+            End Select
+            If errorflag = False Then
+                result = result.Replace("（copy）", "复制")
+                result = result.Replace("（move）", "移动")
+                result = result.Replace("（dir）", "目录")
+                result = result.Replace("（file）", "文件")
+                result = result.Replace("（0）", "（不覆盖）")
+                result = result.Replace("（1）", "（覆盖）")
+            End If
+#End Region
+
         Else
             '语法错误，或者不支持，则原样输出
             result = src

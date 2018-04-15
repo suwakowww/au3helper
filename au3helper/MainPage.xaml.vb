@@ -313,6 +313,12 @@ Public NotInheritable Class MainPage
                 If dlg_r = ContentDialogResult.Primary Then
                     rawcode.Text = rawcode.Text + processwait_dlg.addcode.Trim() + vbCrLf
                 End If
+            Case Is = "FileCopy", Is = "FileMove", Is = "DirCopy", Is = "DirMove"
+                Dim df_cm_dlg As New df_cm_cdlg
+                dlg_r = Await df_cm_dlg.ShowAsync()
+                If dlg_r = ContentDialogResult.Primary Then
+                    rawcode.Text = rawcode.Text + df_cm_dlg.addcode.Trim() + vbCrLf
+                End If
             Case Else
                 Dim unsupport_dlg As New ContentDialog With
                     {

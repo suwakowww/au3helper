@@ -21,6 +21,8 @@ Public Class au3func
         '（U+F1DE），设置（三栏）
         '（U+F04C），暂停
         '（U+F120），运行
+        '（U+F114），文件夹
+        '（U+F0F6），文件
         Dim func_list As New List(Of au3functions)()
         func_list.Add(New au3functions With {.au3funccat = "Windows 窗口", .au3funcs = "WinWait", .au3fcicon = ""})
         func_list.Add(New au3functions With {.au3funccat = "Windows 窗口", .au3funcs = "WinWaitActive", .au3fcicon = ""})
@@ -35,7 +37,7 @@ Public Class au3func
         func_list.Add(New au3functions With {.au3funccat = "键盘", .au3funcs = "Send", .au3fcicon = ""})
         func_list.Add(New au3functions With {.au3funccat = "计时与延迟", .au3funcs = "Sleep", .au3fcicon = ""})
         func_list.Add(New au3functions With {.au3funccat = "进程", .au3funcs = "Run", .au3fcicon = ""})
-        '18.04.18添加
+        '18.04.08添加
         func_list.Add(New au3functions With {.au3funccat = "Windows 控件", .au3funcs = "ControlEnable", .au3fcicon = ""})
         func_list.Add(New au3functions With {.au3funccat = "Windows 控件", .au3funcs = "ControlDisable", .au3fcicon = ""})
         func_list.Add(New au3functions With {.au3funccat = "Windows 控件", .au3funcs = "ControlHide", .au3fcicon = ""})
@@ -43,7 +45,11 @@ Public Class au3func
         func_list.Add(New au3functions With {.au3funccat = "Windows 控件", .au3funcs = "ControlFocus", .au3fcicon = ""})
         func_list.Add(New au3functions With {.au3funccat = "进程", .au3funcs = "ProcessWait", .au3fcicon = ""})
         func_list.Add(New au3functions With {.au3funccat = "进程", .au3funcs = "ProcessWaitClose", .au3fcicon = ""})
-
+        '18.04.15添加
+        func_list.Add(New au3functions With {.au3funccat = "文件，目录和磁盘", .au3funcs = "DirCopy", .au3fcicon = ""})
+        func_list.Add(New au3functions With {.au3funccat = "文件，目录和磁盘", .au3funcs = "DirMove", .au3fcicon = ""})
+        func_list.Add(New au3functions With {.au3funccat = "文件，目录和磁盘", .au3funcs = "FileCopy", .au3fcicon = ""})
+        func_list.Add(New au3functions With {.au3funccat = "文件，目录和磁盘", .au3funcs = "FileMove", .au3fcicon = ""})
         '排序
         func_list.Sort(AddressOf sortlist)
         Return func_list

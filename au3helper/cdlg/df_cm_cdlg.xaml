@@ -1,0 +1,40 @@
+﻿<ContentDialog
+    x:Class="au3helper.df_cm_cdlg"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:au3helper"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Title="文件（夹）复制 / 移动"
+    PrimaryButtonText="插入"
+    SecondaryButtonText="关闭"
+    PrimaryButtonClick="ContentDialog_PrimaryButtonClick"
+    SecondaryButtonClick="ContentDialog_SecondaryButtonClick" Loaded="ContentDialog_Loaded">
+
+    <Grid>
+        <ScrollViewer x:Name="scrollbar">
+            <StackPanel Margin="0,0,12,0">
+                <TextBlock Text="选择类型"/>
+                <ComboBox Margin="0,4" x:Name="fifl_type" SelectedIndex="0">
+                    <ComboBox.Items>
+                        <ComboBoxItem Content="文件"/>
+                        <ComboBoxItem Content="文件夹"/>
+                    </ComboBox.Items>
+                </ComboBox>
+                <TextBlock Text="操作"/>
+                <ComboBox Margin="0,4" x:Name="fifl_act" SelectedIndex="0">
+                    <ComboBox.Items>
+                        <ComboBoxItem Content="复制"/>
+                        <ComboBoxItem Content="移动"/>
+                    </ComboBox.Items>
+                </ComboBox>
+                <TextBlock Text="源路径"/>
+                <TextBox Margin="0,4" x:Name="fifl_src"/>
+                <TextBlock Text="目标路径"/>
+                <TextBox Margin="0,4" x:Name="fifl_dst"/>
+                <CheckBox x:Name="fifl_rep" Content="覆盖原有项"/>
+            </StackPanel>
+        </ScrollViewer>
+    </Grid>
+</ContentDialog>

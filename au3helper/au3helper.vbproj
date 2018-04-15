@@ -110,6 +110,9 @@
     <Compile Include="cdlg\controlact_cdlg.xaml.vb">
       <DependentUpon>controlact_cdlg.xaml</DependentUpon>
     </Compile>
+    <Compile Include="cdlg\df_cm_cdlg.xaml.vb">
+      <DependentUpon>df_cm_cdlg.xaml</DependentUpon>
+    </Compile>
     <Compile Include="cdlg\processwait_cdlg.xaml.vb">
       <DependentUpon>processwait_cdlg.xaml</DependentUpon>
     </Compile>
@@ -223,6 +226,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="cdlg\controlclick_cdlg.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="cdlg\df_cm_cdlg.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
