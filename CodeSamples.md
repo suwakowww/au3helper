@@ -177,3 +177,9 @@ End Sub
         End If
     End Sub
 ```
+
+4. 应用内 appdata 路径
+`Windows.Storage.ApplicationData.Current.LocalFolder`（`ms-appdata:///local/`）：应用本地文件夹，不会在设备间进行同步。无空间限制，但除卸载应用或者自行清理外不会进行清理。
+`Windows.Storage.ApplicationData.Current.RoamingFolder`（`ms-appdata:///roaming/`）：应用漫游文件夹，可以多设备同步，但有空间限制。
+`Windows.Storage.ApplicationData.Current.TemporaryFolder`（`ms-appdata:///temp/`）：应用临时文件夹，不会进行同步且系统会定期清理。
+`Windows.ApplicationModel.Package.Current.InstalledLocation`（`ms-appx:///`）：应用安装文件夹，只读
